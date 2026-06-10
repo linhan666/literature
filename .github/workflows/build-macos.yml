@@ -1,0 +1,37 @@
+﻿name: Build macOS Literature App
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-macos:
+    name: Build macOS app
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Build macOS app
+        run: |
+          pyinstaller --noconfirm --clean --onefile --windowed --name literature --collect-all customtkinter main_v4.py
+
+      - name: Zip artifact
+        run: |
+          ditto -c -k --sequesterRsrc --keepParent dist/literature.app literature-macos.zip
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: literature-macos
+          path: literature-macos.zip
