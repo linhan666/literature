@@ -5,8 +5,11 @@ on:
 
 jobs:
   build-macos:
-    name: Build macOS app
-    runs-on: macos-latest
+    name: Build macOS app (Intel, 10.14+)
+    runs-on: macos-13
+
+    env:
+      MACOSX_DEPLOYMENT_TARGET: "10.14"
 
     steps:
       - name: Checkout
@@ -24,7 +27,12 @@ jobs:
 
       - name: Build macOS app
         run: |
-          pyinstaller --noconfirm --clean --onefile --windowed --name literature --collect-all customtkinter main_v4.py
+          pyinstaller --noconfirm --clean \
+            --onefile \
+            --windowed \
+            --name literature \
+            --collect-all customtkinter \
+            main_v4_clean.py
 
       - name: Zip artifact
         run: |
