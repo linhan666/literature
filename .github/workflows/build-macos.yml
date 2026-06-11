@@ -5,8 +5,8 @@ on:
 
 jobs:
   build-macos:
-    name: Build macOS app (Intel x86_64, 10.14+)
-    runs-on: macos-14
+    name: Build macOS app (Intel, 10.14+)
+    runs-on: macos-13
 
     env:
       MACOSX_DEPLOYMENT_TARGET: "10.14"
@@ -15,11 +15,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Python (Intel x86_64)
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-          architecture: 'x64'
 
       - name: Install dependencies
         run: |
@@ -29,10 +28,9 @@ jobs:
       - name: Build macOS app
         run: |
           pyinstaller --noconfirm --clean \
-            --onedir \
+            --onefile \
             --windowed \
             --name literature \
-            --target-arch x86_64 \
             --collect-all customtkinter \
             main_v4_clean.py
 
