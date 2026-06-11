@@ -29,9 +29,10 @@ jobs:
       - name: Build macOS app
         run: |
           pyinstaller --noconfirm --clean \
-            --onefile \
+            --onedir \
             --windowed \
             --name literature \
+            --target-arch x86_64 \
             --collect-all customtkinter \
             main_v4_clean.py
 
