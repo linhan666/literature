@@ -1,0 +1,15 @@
+{
+  "idea": "Synthetic adaptive Scientific Agent calibration example",
+  "paperability_score": 68.6,
+  "paperability_classification": "Plausible paper candidate with significant risks",
+  "high_quality_potential_score": 68.6,
+  "high_quality_classification": "Credible solid-paper ceiling",
+  "fatal_flaws": [],
+  "agent_score": 21.6,
+  "agent_classification": "Credible Scientific Agent contribution",
+  "agent_components": {
+    "necessity": 6.4,
+    "scientific_autonomy": 8.0,
+    "scientific_discovery_value": 7.2
+  }
+}

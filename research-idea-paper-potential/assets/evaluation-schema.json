@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Research Idea Evaluation Scores",
+  "type": "object",
+  "required": [
+    "dimensions"
+  ],
+  "properties": {
+    "idea": {
+      "type": "string"
+    },
+    "dimensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "problem_importance",
+        "knowledge_gap",
+        "novelty",
+        "claim_strength",
+        "mechanistic_insight",
+        "evidence_strength",
+        "alternative_explanations",
+        "generalizability",
+        "feasibility",
+        "reproducibility",
+        "narrative_coherence"
+      ],
+      "properties": {
+        "problem_importance": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 5
+        },
+        "knowledge_gap": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 5
+        },
+        "novelty": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 5
+        },
+        "claim_strength": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 5
+        },
+        "mechanistic_insight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 5
+        },
+        "evidence_strength": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 5
+        },
+        "alternative_explanations": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 5
+        },
+        "generalizability": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 5
+        },
+        "feasibility": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 5
+        },
+        "reproducibility": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 5
+        },
+        "narrative_coherence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 5
+        }
+      }
+    },
+    "agent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "necessity",
+        "scientific_autonomy",
+        "scientific_discovery_value"
+      ],
+      "properties": {
+        "necessity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 5
+        },
+        "scientific_autonomy": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 5
+        },
+        "scientific_discovery_value": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 5
+        }
+      }
+    },
+    "fatal_flaws": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}
