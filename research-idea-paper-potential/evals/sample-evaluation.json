@@ -1,0 +1,22 @@
+{
+  "idea": "Synthetic adaptive Scientific Agent calibration example",
+  "dimensions": {
+    "problem_importance": 4.0,
+    "knowledge_gap": 3.5,
+    "novelty": 3.5,
+    "claim_strength": 4.0,
+    "mechanistic_insight": 3.0,
+    "evidence_strength": 3.0,
+    "alternative_explanations": 3.0,
+    "generalizability": 3.0,
+    "feasibility": 3.5,
+    "reproducibility": 3.5,
+    "narrative_coherence": 4.0
+  },
+  "agent": {
+    "necessity": 4.0,
+    "scientific_autonomy": 4.0,
+    "scientific_discovery_value": 3.0
+  },
+  "fatal_flaws": []
+}

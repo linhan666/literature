@@ -1,9 +1,10 @@
 # literature — 文献管理工具集
 
-面向科研场景的一站式文献工具集，包含两部分：
+面向科研场景的一站式文献工具集，包含三部分：
 
 1. **文献智能管理系统**（桌面应用）—— PDF 文献入库、元数据自动解析、AI 深度分析与课题建议生成；
-2. **Claude 文献阅读 Skills** —— 两个可安装的 skill，分别用于深度解读**研究型论文**和**综述型论文**。
+2. **Claude 文献阅读 Skills** —— 两个可安装的 skill，分别用于深度解读**研究型论文**和**综述型论文**；
+3. **研究想法评估 Skill** —— 从科学问题、创新性、证据和可行性等维度评估一个 idea 的论文潜力。
 
 领域背景：结构生物学（Structural Biology）/ 计算机辅助药物设计（CADD）/ AIDD / 细胞生物学 / 机器学习交叉方向。
 
@@ -11,24 +12,35 @@
 
 ```
 literature/
-├── research-paper-interpreter/   # Skill 1：研究型论文深度解读
+├── research-paper-interpreter/      # Skill 1：研究型论文深度解读
 │   └── SKILL.md
-├── review-paper-interpreter/     # Skill 2：综述型论文系统解读
+├── review-paper-interpreter/       # Skill 2：综述型论文系统解读
 │   └── SKILL.md
-├── main.py                       # 文献管理系统 v1（初版）
-├── main_v4.py                    # 文献管理系统 v4（功能完整版，推荐）
-├── main_v4_clean.py              # v4 精简版（用于 PyInstaller 打包）
-├── requirements.txt              # Python 依赖
+├── research-idea-paper-potential/  # Skill 3：研究想法与论文潜力评估
+│   ├── SKILL.md
+│   ├── README.md
+│   ├── MANIFEST.md
+│   ├── FILE_CHECKSUMS.txt
+│   ├── .gitattributes
+│   ├── references/
+│   ├── assets/
+│   ├── examples/
+│   ├── evals/
+│   └── scripts/
+├── main.py                         # 文献管理系统 v1（初版）
+├── main_v4.py                      # 文献管理系统 v4（功能完整版，推荐）
+├── main_v4_clean.py                # v4 精简版（用于 PyInstaller 打包）
+├── requirements.txt                # Python 依赖
 └── .github/
     └── workflows/
-        └── build-macos.yml       # macOS 应用自动打包
+        └── build-macos.yml         # macOS 应用自动打包
 ```
 
 ---
 
-## Skills：AI 文献阅读助手
+## Skills：AI 文献阅读与研究想法评估
 
-两个 skill 都遵循同一套核心原则：**不做逐段翻译或机械总结**，而是把论文当作"科研对象"来重建其科学逻辑，并明确区分三类信息——`Paper`（论文原文陈述）、`External evidence`（联网核验的外部证据）、`Synthesis`（综合分析）。允许联网时会主动检索最新文献、预印本和官方代码仓库进行核验。
+两个论文解读 skill 都遵循同一套核心原则：**不做逐段翻译或机械总结**，而是把论文当作"科研对象"来重建其科学逻辑，并明确区分三类信息——`Paper`（论文原文陈述）、`External evidence`（联网核验的外部证据）、`Synthesis`（综合分析）。允许联网时会主动检索最新文献、预印本和官方代码仓库进行核验。
 
 两者的区别在于论文类型不同、解读目标不同：
 
@@ -38,6 +50,15 @@ literature/
 | **核心目标** | 还原"这项工作做了什么、为什么这样设计、证据是什么" | 重建"这个领域如何被组织、方法如何演化、空白在哪里" |
 | **典型输出** | 方法机制拆解、实验证据审计、创新性评估、代码与可复现性分析、可执行的后续研究设计 | 领域分类谱系表、技术演进脉络、代表工作剖析、领域共识与瓶颈、研究空白与选题启发 |
 | **典型触发语** | "解读这篇论文"、"分析它的模型架构和实验"、"评估可复现性" | "解读这篇综述"、"梳理方法演化和研究空白"、"结合最新文献评估这篇 Survey 的 future directions" |
+
+### research-idea-paper-potential（研究想法与论文潜力评估）
+
+用于早期研究构思筛选和项目决策，区分“是否能形成可辩护论文”与“高质量论文的潜力上限”。
+
+- 以研究问题、知识空白、可证伪主张、判别性证据和可行性为核心
+- 使用致命缺陷门槛和审稿人攻击，避免强项平均掩盖阻断性问题
+- 对 Scientific Agent 想法单独评估 Agent 必要性、科学自主性和发现价值
+- 输出最小决定性证据包、Go / Conditional Go / Reframe / No-Go 建议及当前可辩护的论文定位
 
 ### research-paper-interpreter（研究型论文解读）
 
@@ -63,14 +84,16 @@ literature/
 # 全局安装（所有项目可用）
 cp -r research-paper-interpreter ~/.claude/skills/
 cp -r review-paper-interpreter  ~/.claude/skills/
+cp -r research-idea-paper-potential ~/.claude/skills/
 
 # 或仅当前项目安装
 mkdir -p .claude/skills
 cp -r research-paper-interpreter .claude/skills/
 cp -r review-paper-interpreter  .claude/skills/
+cp -r research-idea-paper-potential .claude/skills/
 ```
 
-安装后在 Claude Code 中直接说"帮我解读这篇论文 / 这篇综述"即可自动触发，或用"使用 research-paper-interpreter 解读这篇论文"显式调用。也可以指定聚焦方向，例如：
+安装后在 Claude Code 中可直接描述任务，也可以显式指定 skill。例如研究想法评估可以说"使用 research-idea-paper-potential 评估这个 idea，严格核查新颖性与决定性证据"。论文解读也可以指定聚焦方向，例如：
 
 - `重点分析模型架构和数据流`
 - `重点分析代码实现和可复现性`
