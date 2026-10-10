@@ -1,10 +1,11 @@
 # literature — 文献管理工具集
 
-面向科研场景的一站式文献工具集，包含三部分：
+面向科研场景的一站式文献工具集，包含四部分：
 
 1. **文献智能管理系统**（桌面应用）—— PDF 文献入库、元数据自动解析、AI 深度分析与课题建议生成；
 2. **Claude 文献阅读 Skills** —— 两个可安装的 skill，分别用于深度解读**研究型论文**和**综述型论文**；
-3. **研究想法评估 Skill** —— 从科学问题、创新性、证据和可行性等维度评估一个 idea 的论文潜力。
+3. **研究想法具体化 Skill** —— 从模糊 seed 展开多个彼此不同、可检验的候选 idea；
+4. **研究想法评估 Skill** —— 从科学问题、创新性、证据和可行性等维度评估候选 idea 的论文潜力。
 
 领域背景：结构生物学（Structural Biology）/ 计算机辅助药物设计（CADD）/ AIDD / 细胞生物学 / 机器学习交叉方向。
 
@@ -16,7 +17,20 @@ literature/
 │   └── SKILL.md
 ├── review-paper-interpreter/       # Skill 2：综述型论文系统解读
 │   └── SKILL.md
-├── research-idea-paper-potential/  # Skill 3：研究想法与论文潜力评估
+├── research-idea-concretizer/      # Skill 3：模糊 seed 到候选 idea 具体化
+│   ├── SKILL.md
+│   ├── README.md
+│   ├── .gitattributes
+│   ├── CHANGELOG.md
+│   ├── MANIFEST.sha256
+│   ├── VERSION
+│   ├── schemas/
+│   ├── templates/
+│   ├── rubrics/
+│   ├── references/
+│   ├── examples/
+│   └── scripts/
+├── research-idea-paper-potential/  # Skill 4：研究想法与论文潜力评估
 │   ├── SKILL.md
 │   ├── README.md
 │   ├── MANIFEST.md
@@ -38,7 +52,7 @@ literature/
 
 ---
 
-## Skills：AI 文献阅读与研究想法评估
+## Skills：AI 文献阅读与研究想法工作流
 
 两个论文解读 skill 都遵循同一套核心原则：**不做逐段翻译或机械总结**，而是把论文当作"科研对象"来重建其科学逻辑，并明确区分三类信息——`Paper`（论文原文陈述）、`External evidence`（联网核验的外部证据）、`Synthesis`（综合分析）。允许联网时会主动检索最新文献、预印本和官方代码仓库进行核验。
 
@@ -50,6 +64,18 @@ literature/
 | **核心目标** | 还原"这项工作做了什么、为什么这样设计、证据是什么" | 重建"这个领域如何被组织、方法如何演化、空白在哪里" |
 | **典型输出** | 方法机制拆解、实验证据审计、创新性评估、代码与可复现性分析、可执行的后续研究设计 | 领域分类谱系表、技术演进脉络、代表工作剖析、领域共识与瓶颈、研究空白与选题启发 |
 | **典型触发语** | "解读这篇论文"、"分析它的模型架构和实验"、"评估可复现性" | "解读这篇综述"、"梳理方法演化和研究空白"、"结合最新文献评估这篇 Survey 的 future directions" |
+
+研究想法工作流可以串联两个 skill：`research-idea-concretizer` 先从模糊 seed 扩展并正交化多个候选，再由 `research-idea-paper-potential` 评估候选的论文潜力。前者负责具体化与多样化，不替后者选出胜者。
+
+### research-idea-concretizer（模糊 seed 到候选 idea 具体化）
+
+把一个模糊研究 seed 系统地展开为多个彼此不同、可证伪、可评估的候选 idea。
+
+- 先扩展问题空间与能力空间，再按核心科学问题聚类，避免只替换模型或数据集造成伪多样性
+- 为每个保留候选明确问题、研究缺口、假设、方法、评估和预期贡献，并补充基线、证伪条件、关键假设、风险与待核实事项
+- 对新颖性与研究缺口标注核验状态；未核实的内容不会写成既定事实
+- seed 支持时通常保留 3–8 个候选；若有依据的候选更少，就如实说明
+- 详细说明见 [research-idea-concretizer/README.md](research-idea-concretizer/README.md)
 
 ### research-idea-paper-potential（研究想法与论文潜力评估）
 
@@ -84,16 +110,18 @@ literature/
 # 全局安装（所有项目可用）
 cp -r research-paper-interpreter ~/.claude/skills/
 cp -r review-paper-interpreter  ~/.claude/skills/
+cp -r research-idea-concretizer ~/.claude/skills/
 cp -r research-idea-paper-potential ~/.claude/skills/
 
 # 或仅当前项目安装
 mkdir -p .claude/skills
 cp -r research-paper-interpreter .claude/skills/
 cp -r review-paper-interpreter  .claude/skills/
+cp -r research-idea-concretizer .claude/skills/
 cp -r research-idea-paper-potential .claude/skills/
 ```
 
-安装后在 Claude Code 中可直接描述任务，也可以显式指定 skill。例如研究想法评估可以说"使用 research-idea-paper-potential 评估这个 idea，严格核查新颖性与决定性证据"。论文解读也可以指定聚焦方向，例如：
+安装后在 Claude Code 中可直接描述任务，也可以显式指定 skill。例如可以先说"使用 research-idea-concretizer 把这个模糊 seed 扩展为多个正交候选 idea"，再说"使用 research-idea-paper-potential 评估这些候选的论文潜力"。论文解读也可以指定聚焦方向，例如：
 
 - `重点分析模型架构和数据流`
 - `重点分析代码实现和可复现性`
