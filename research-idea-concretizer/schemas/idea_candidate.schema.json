@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/linhan666/literature/main/research-idea-concretizer/schemas/idea_candidate.schema.json",
+  "title": "Research Idea Candidate",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "one_sentence_claim",
+    "problem",
+    "gap",
+    "hypothesis",
+    "mechanistic_rationale",
+    "method",
+    "evidence_inputs",
+    "baselines",
+    "evaluation",
+    "falsification_condition",
+    "contribution",
+    "critical_assumptions",
+    "main_risks",
+    "verification_queue",
+    "maturity_status"
+  ],
+  "properties": {
+    "id": {"type": "string", "minLength": 1},
+    "title": {"type": "string", "minLength": 3},
+    "one_sentence_claim": {"type": "string", "minLength": 10},
+    "problem": {"type": "string", "minLength": 10},
+    "gap": {
+      "type": "object",
+      "required": ["statement", "verification_status"],
+      "properties": {
+        "statement": {"type": "string", "minLength": 10},
+        "verification_status": {
+          "enum": ["verified", "partially_verified", "unverified"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "hypothesis": {"type": "string", "minLength": 10},
+    "mechanistic_rationale": {"type": "string", "minLength": 10},
+    "method": {"type": "string", "minLength": 10},
+    "evidence_inputs": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "baselines": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "evaluation": {
+      "type": "object",
+      "required": ["primary_metrics", "success_criterion", "failure_criterion"],
+      "properties": {
+        "primary_metrics": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "minItems": 1
+        },
+        "success_criterion": {"type": "string", "minLength": 5},
+        "failure_criterion": {"type": "string", "minLength": 5},
+        "validation_notes": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "falsification_condition": {"type": "string", "minLength": 10},
+    "contribution": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "new_method",
+          "new_scientific_evidence",
+          "new_mechanism",
+          "new_benchmark_or_evaluation",
+          "new_dataset_or_resource",
+          "new_autonomous_capability",
+          "informative_negative_result"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "critical_assumptions": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1
+    },
+    "main_risks": {
+      "type": "array",
+      "items": {"type": "string"},
+      "minItems": 1
+    },
+    "verification_queue": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "orthogonality_rationale": {"type": "string"},
+    "portfolio_role": {
+      "enum": ["conservative", "balanced", "ambitious", "high_risk_high_reward", "unassigned"]
+    },
+    "maturity_status": {
+      "enum": ["mature", "near_mature", "deferred_needs_evidence"]
+    },
+    "agent_fields": {
+      "type": "object",
+      "properties": {
+        "non_static_decision": {"type": "string"},
+        "state_dependent_adaptation": {"type": "string"},
+        "action_space": {"type": "array", "items": {"type": "string"}},
+        "scientific_autonomy": {"type": "string"},
+        "agent_necessity_result": {
+          "enum": ["agent_necessary", "agent_helpful_not_necessary", "static_workflow_sufficient", "not_applicable"]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,54 @@
+{
+  "id": "C1",
+  "title": "Evidence-guided receptor-state selection",
+  "one_sentence_claim": "Adaptive evidence integration can select GPCR receptor conformations that improve screening enrichment over strong fixed baselines.",
+  "problem": "Receptor conformation selection can materially alter GPCR virtual-screening performance.",
+  "gap": {
+    "statement": "Target-specific structure selection may require evidence integration beyond a single predefined structure-selection rule.",
+    "verification_status": "unverified"
+  },
+  "hypothesis": "An adaptive evidence-guided selector will improve held-out-target enrichment relative to fixed single-structure and naive ensemble baselines.",
+  "mechanistic_rationale": "Different receptor states expose distinct pocket geometries and interaction patterns, so target-specific evidence may identify structures better matched to active ligands.",
+  "method": "Retrieve candidate receptor structures, integrate structural and pharmacological evidence, perform bounded retrospective docking, and select a receptor or small ensemble before held-out screening.",
+  "evidence_inputs": [
+    "candidate receptor structures",
+    "ligand bioactivity data",
+    "structural annotations",
+    "retrospective enrichment results"
+  ],
+  "baselines": [
+    "fixed expert-selected structure",
+    "random structure selection",
+    "all-structure ensemble"
+  ],
+  "evaluation": {
+    "primary_metrics": ["EF1%", "BEDROC", "AUPRC"],
+    "success_criterion": "Consistent improvement over strong fixed baselines across held-out targets.",
+    "failure_criterion": "No reproducible improvement or no transfer to held-out targets.",
+    "validation_notes": "Use target-level separation and repeated runs where stochastic decisions are involved."
+  },
+  "falsification_condition": "The hypothesis is unsupported if adaptive selection does not outperform strong fixed or expert baselines on held-out targets.",
+  "contribution": ["new_method", "new_autonomous_capability"],
+  "critical_assumptions": [
+    "Candidate receptor structures span functionally relevant states.",
+    "Retrospective ligand data are sufficiently informative for target-level evaluation."
+  ],
+  "main_risks": [
+    "Data leakage between selection and evaluation.",
+    "Apparent gains may arise from docking-engine bias rather than improved state selection."
+  ],
+  "verification_queue": [
+    "Search for prior adaptive GPCR receptor-state selection systems.",
+    "Verify availability of held-out target benchmarks with suitable actives and decoys."
+  ],
+  "orthogonality_rationale": "This candidate studies receptor-state selection rather than pipeline composition, computational-budget allocation, or scientific discovery of target regimes.",
+  "portfolio_role": "balanced",
+  "maturity_status": "near_mature",
+  "agent_fields": {
+    "non_static_decision": "Choose which receptor structures to retain and whether additional evidence or docking tests are needed.",
+    "state_dependent_adaptation": "Intermediate enrichment and pocket checks can alter the next evidence-gathering or selection action.",
+    "action_space": ["retrieve more evidence", "test another receptor", "retain one receptor", "retain a small ensemble", "stop"],
+    "scientific_autonomy": "The system makes target-specific receptor-selection decisions rather than only executing a predetermined structure list.",
+    "agent_necessity_result": "agent_helpful_not_necessary"
+  }
+}
