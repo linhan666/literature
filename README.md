@@ -1,11 +1,12 @@
 # literature — 文献管理工具集
 
-面向科研场景的一站式文献工具集，包含四部分：
+面向科研场景的一站式文献工具集，包含五部分：
 
 1. **文献智能管理系统**（桌面应用）—— PDF 文献入库、元数据自动解析、AI 深度分析与课题建议生成；
 2. **Claude 文献阅读 Skills** —— 两个可安装的 skill，分别用于深度解读**研究型论文**和**综述型论文**；
 3. **研究想法具体化 Skill** —— 从模糊 seed 展开多个彼此不同、可检验的候选 idea；
-4. **研究想法评估 Skill** —— 从科学问题、创新性、证据和可行性等维度评估候选 idea 的论文潜力。
+4. **研究想法评估 Skill** —— 从科学问题、创新性、证据和可行性等维度评估候选 idea 的论文潜力；
+5. **药物属性预测手稿 Skills** —— 分别从零组织首稿、重建已有手稿，使用真实范文校准写作与图表表达，并遵守实验和证据边界。
 
 领域背景：结构生物学（Structural Biology）/ 计算机辅助药物设计（CADD）/ AIDD / 细胞生物学 / 机器学习交叉方向。
 
@@ -41,6 +42,21 @@ literature/
 │   ├── examples/
 │   ├── evals/
 │   └── scripts/
+├── drug-property-manuscript-from-scratch/  # 从中文笔稿、研究意图和实验材料组织首稿
+│   ├── .gitattributes
+│   ├── SKILL.md
+│   ├── README.zh-CN.md
+│   ├── agents/
+│   ├── assets/
+│   ├── examples/
+│   └── references/
+├── drug-property-manuscript-rebuild/       # 基于真实范文重建已有论文手稿
+│   ├── .gitattributes
+│   ├── SKILL.md
+│   ├── README.zh-CN.md
+│   ├── assets/
+│   ├── examples/
+│   └── references/
 ├── main.py                         # 文献管理系统 v1（初版）
 ├── main_v4.py                      # 文献管理系统 v4（功能完整版，推荐）
 ├── main_v4_clean.py                # v4 精简版（用于 PyInstaller 打包）
@@ -52,7 +68,7 @@ literature/
 
 ---
 
-## Skills：AI 文献阅读与研究想法工作流
+## Skills：文献阅读、研究构思与论文写作工作流
 
 两个论文解读 skill 都遵循同一套核心原则：**不做逐段翻译或机械总结**，而是把论文当作"科研对象"来重建其科学逻辑，并明确区分三类信息——`Paper`（论文原文陈述）、`External evidence`（联网核验的外部证据）、`Synthesis`（综合分析）。允许联网时会主动检索最新文献、预印本和官方代码仓库进行核验。
 
@@ -85,6 +101,24 @@ literature/
 - 使用致命缺陷门槛和审稿人攻击，避免强项平均掩盖阻断性问题
 - 对 Scientific Agent 想法单独评估 Agent 必要性、科学自主性和发现价值
 - 输出最小决定性证据包、Go / Conditional Go / Reframe / No-Go 建议及当前可辩护的论文定位
+
+### drug-property-manuscript-from-scratch（药物属性预测论文从零成稿）
+
+面向已有实验材料、但还没有完整手稿的研究者，从中文笔稿、研究意图、实验结果和图表中恢复研究事实与证据边界，学习适配的真实范文写法，并完成英文首稿。
+
+- 适用于中文笔稿、零散研究记录、粗略研究意图或以图表为主的材料
+- 通过真实范文拆解、迁移卡、段落与图表规划、小样比较，推进到完整工作稿
+- 与 [drug-property-manuscript-from-scratch/README.zh-CN.md](drug-property-manuscript-from-scratch/README.zh-CN.md) 配套
+
+### drug-property-manuscript-rebuild（药物属性预测手稿重建 v2）
+
+面向已有完整手稿的重写任务，围绕具体范文拆解、写法迁移、真实小样对照和迭代修订，改善论证、段落组织、图表与表格表达。
+
+- 适用于已有论文初稿，且希望提升论文论证或视觉表达的项目
+- 保留已完成实验和原始文件；科学主张以实际证据为边界
+- 与 [drug-property-manuscript-rebuild/README.zh-CN.md](drug-property-manuscript-rebuild/README.zh-CN.md) 配套
+
+两个药物手稿 skill 可独立使用；按项目材料的起点选择对应流程。
 
 ### research-paper-interpreter（研究型论文解读）
 
@@ -120,6 +154,24 @@ cp -r review-paper-interpreter  .claude/skills/
 cp -r research-idea-concretizer .claude/skills/
 cp -r research-idea-paper-potential .claude/skills/
 ```
+
+### Codex 中的药物手稿 Skills 安装
+
+两个药物属性预测手稿 skill 按 Codex 的 skill 目录格式提供。安装时保留完整目录，特别是 `references/`、`assets/` 和 `examples/`：
+
+```bash
+# 当前项目
+mkdir -p .agents/skills
+cp -r drug-property-manuscript-from-scratch .agents/skills/
+cp -r drug-property-manuscript-rebuild .agents/skills/
+
+# 或安装到用户级目录
+mkdir -p ~/.agents/skills
+cp -r drug-property-manuscript-from-scratch ~/.agents/skills/
+cp -r drug-property-manuscript-rebuild ~/.agents/skills/
+```
+
+在 Codex 中可显式调用 `$drug-property-manuscript-from-scratch` 或 `$drug-property-manuscript-rebuild`；各自的 README 说明了适用场景和输入方式。
 
 安装后在 Claude Code 中可直接描述任务，也可以显式指定 skill。例如可以先说"使用 research-idea-concretizer 把这个模糊 seed 扩展为多个正交候选 idea"，再说"使用 research-idea-paper-potential 评估这些候选的论文潜力"。论文解读也可以指定聚焦方向，例如：
 

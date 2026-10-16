@@ -1,0 +1,2 @@
+# Keep package text stable across Windows, macOS, and Linux.
+* text eol=lf

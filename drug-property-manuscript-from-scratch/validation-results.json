@@ -1,0 +1,335 @@
+{
+  "package": "drug-property-manuscript-from-scratch",
+  "version": "1.0.0",
+  "date": "2026-10-16",
+  "validation_type": "local static artifact and packaging checks plus fictional example arithmetic; not Codex behavioral evaluation",
+  "checks": [
+    {
+      "check": "Delimited YAML frontmatter",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Required metadata types",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Valid name matching folder",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Description within size boundary",
+      "passed": true,
+      "detail": "515"
+    },
+    {
+      "check": "All required resources exist",
+      "passed": true,
+      "detail": "22"
+    },
+    {
+      "check": "No symlinks",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Nonempty UTF-8 text files",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Text-only nonexecutable payload",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "No sandbox-specific generated paths",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Relative link: README.zh-CN.md -> SOURCES.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Relative link: README.zh-CN.md -> VALIDATION.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Markdown fences: README.zh-CN.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Markdown fences: VALIDATION.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Relative link: SKILL.md -> references/01-intake-evidence.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Relative link: SKILL.md -> references/02-exemplar-transfer.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Relative link: SKILL.md -> references/03-argument-first-drafting.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Relative link: SKILL.md -> references/04-figures-tables.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Relative link: SKILL.md -> references/05-review-handoff.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Relative link: SKILL.md -> references/06-domain-guardrails.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Markdown fences: SKILL.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Markdown fences: SOURCES.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Markdown fences: EVAL_CASES.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Markdown fences: assets/paragraph-packet.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Markdown fences: assets/intake.zh-CN.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Markdown fences: assets/transfer-card.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Markdown fences: assets/study-brief.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Markdown fences: assets/handoff.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Relative link: references/02-exemplar-transfer.md -> ../assets/transfer-card.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Markdown fences: references/02-exemplar-transfer.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Markdown fences: references/06-domain-guardrails.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Relative link: references/03-argument-first-drafting.md -> ../assets/paragraph-packet.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Markdown fences: references/03-argument-first-drafting.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Relative link: references/05-review-handoff.md -> 06-domain-guardrails.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Relative link: references/05-review-handoff.md -> ../assets/handoff.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Markdown fences: references/05-review-handoff.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Relative link: references/01-intake-evidence.md -> ../assets/intake.zh-CN.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Relative link: references/01-intake-evidence.md -> 04-figures-tables.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Relative link: references/01-intake-evidence.md -> ../assets/evidence-ledger.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Markdown fences: references/01-intake-evidence.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Relative link: references/04-figures-tables.md -> ../assets/figure-register.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Markdown fences: references/04-figures-tables.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Markdown fences: examples/intention-conflict.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Markdown fences: examples/notes-to-manuscript.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Codex interface metadata",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Explicit-only invocation",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Default prompt names this skill",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "No declared external dependency",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "CSV header-only template: evidence-ledger.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "CSV header-only template: figure-register.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "CSV header-only template: result-register.csv",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Fictional labeling: intention-conflict.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Fictional labeling: notes-to-manuscript.md",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Synthetic fixture has 3 numeric rows",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Synthetic fixture ordering and arithmetic",
+      "passed": true,
+      "detail": "{'D1': '0.005', 'D2': '-0.013', 'D3': '0.004'}"
+    },
+    {
+      "check": "32 distinct proposed behavioral IDs",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Behavioral cases explicitly not executed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "Full and scoped output modes",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "No dependency on rebuild skill",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "ZIP CRC integrity",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "ZIP has one expected install root",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "ZIP safe relative paths",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "ZIP exact unique file set",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "ZIP bytes match local artifacts",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "SHA256 manifest coverage and consistency",
+      "passed": true,
+      "detail": ""
+    }
+  ],
+  "behavioral_cases": {
+    "proposed": 32,
+    "executed": 0
+  },
+  "runtime_installation_test": "NOT_RUN",
+  "real_manuscript_quality_evaluation": "NOT_RUN",
+  "user_study_exemplar_analysis": "NOT_RUN"
+}

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Drug Property Paper — From Scratch"
+  short_description: "Turn notes, results, and figures into a first paper"
+  default_prompt: "Use $drug-property-manuscript-from-scratch to write a first English research manuscript from my notes or author brief, completed results, and existing figures. Learn from matched real papers, preserve evidence boundaries, and deliver actual prose and displays."
+policy:
+  allow_implicit_invocation: false

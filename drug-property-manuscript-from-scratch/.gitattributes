@@ -1,0 +1,2 @@
+# Keep package file hashes stable across Windows, macOS, and Linux.
+* text eol=lf
