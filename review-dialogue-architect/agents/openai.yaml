@@ -1,0 +1,4 @@
+interface:
+  display_name: "Review Dialogue Architect"
+  short_description: "Deep scientific review discussion and evidence-aware handoff"
+  default_prompt: "Use review-dialogue-architect to critically explore my review topic and initial goals; do not draft the manuscript; work toward a provenance-aware discussion_summary.md."

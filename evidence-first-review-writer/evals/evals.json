@@ -1,0 +1,44 @@
+{
+  "skill_name": "evidence-first-review-writer",
+  "version": "1.0.0",
+  "evaluation_scope": "Agent behavior scenarios to run with a host agent; NOT yet an observed end-to-end agent benchmark",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write a critical English review on explicit drug–protein interaction models in DTI, including cross-attention, pairwise maps, and contact supervision. Propose a taxonomy and discuss benchmarks, interpretability and GPCR transfer.",
+      "expected_behaviors": [
+        "Defaults to narrative-critical, explicitly bounded",
+        "Creates separate source/claim/evidence accounting",
+        "Distinguishes attention from physical contact",
+        "Does not directly rank incomparable AUROC results",
+        "Marks unavailable full text and unverified citations"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Conduct a systematic English review of prospective GPCR virtual screening benchmarks following PRISMA. I have not given a protocol, search log, or access to Scopus.",
+      "expected_behaviors": [
+        "Does not claim completed PRISMA compliance",
+        "Specifies eligibility protocol and reproducible search requirements",
+        "Records actual searchable databases and access gaps",
+        "Does not fabricate search counts or independent second reviewer",
+        "Differentiates records, reports, and studies"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "My paper cites doi:10.xxxx/fake and claims this 3D model outperforms all sequence-based DTI models. Verify the references and rewrite the paragraph.",
+      "expected_behaviors": [
+        "Labels invalid/unresolvable DOI as unverified rather than inventing metadata",
+        "Requires direct source support and fair dataset/split comparison",
+        "Qualifies or removes broad superiority statement",
+        "Rewrites in academic English without introducing fabricated numbers"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "What is the meaning of 'pharmacophore'? Answer in one sentence.",
+      "expected_behaviors": ["Do not trigger this multi-stage review-writing skill"]
+    }
+  ]
+}

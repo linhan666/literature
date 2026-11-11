@@ -1,12 +1,14 @@
 # literature — 文献管理工具集
 
-面向科研场景的一站式文献工具集，包含五部分：
+面向科研场景的一站式文献工具集，包含七部分：
 
 1. **文献智能管理系统**（桌面应用）—— PDF 文献入库、元数据自动解析、AI 深度分析与课题建议生成；
 2. **Claude 文献阅读 Skills** —— 两个可安装的 skill，分别用于深度解读**研究型论文**和**综述型论文**；
 3. **研究想法具体化 Skill** —— 从模糊 seed 展开多个彼此不同、可检验的候选 idea；
 4. **研究想法评估 Skill** —— 从科学问题、创新性、证据和可行性等维度评估候选 idea 的论文潜力；
 5. **药物属性预测手稿 Skills** —— 分别从零组织首稿、重建已有手稿，使用真实范文校准写作与图表表达，并遵守实验和证据边界。
+6. **综述选题孵化 Skill** —— 通过多轮批判性学术讨论，把拟定标题与初步目标推进为可交接的综述研究框架；
+7. **证据优先综述写作 Skill** —— 真实检索、逐条核验、方法学分类与英文综述逐章写作，强制来源—证据—论断三层可溯源。
 
 领域背景：结构生物学（Structural Biology）/ 计算机辅助药物设计（CADD）/ AIDD / 细胞生物学 / 机器学习交叉方向。
 
@@ -57,6 +59,21 @@ literature/
 │   ├── assets/
 │   ├── examples/
 │   └── references/
+├── review-dialogue-architect/        # 综述选题孵化与批判性讨论（流水线上游）
+│   ├── SKILL.md
+│   ├── agents/
+│   ├── assets/
+│   ├── references/
+│   ├── scripts/
+│   ├── evals/
+│   └── tests/
+├── evidence-first-review-writer/    # 证据优先的英文综述写作（流水线下游）
+│   ├── SKILL.md
+│   ├── assets/
+│   ├── references/
+│   ├── scripts/
+│   ├── evals/
+│   └── tests/
 ├── main.py                         # 文献管理系统 v1（初版）
 ├── main_v4.py                      # 文献管理系统 v4（功能完整版，推荐）
 ├── main_v4_clean.py                # v4 精简版（用于 PyInstaller 打包）
@@ -136,6 +153,148 @@ literature/
 - 会针对综述发表后的进展做**时效核验**：哪些预测已实现、哪些空白已被填补、原分类框架是否仍然适用
 - 输出"优先精读清单 + 关键研究空白 + 可执行启发"，直接服务于选题
 
+---
+
+## 综述写作流水线：从选题孵化到证据驱动的英文成稿
+
+`review-dialogue-architect` 与 `evidence-first-review-writer` 是一条前后衔接的流水线，而不是两个可互相替代的工具：
+
+| | review-dialogue-architect | evidence-first-review-writer |
+|---|---|---|
+| **负责** | 问题表述（problem formulation）、概念推理、批判性对话、交接 | 真实检索、来源筛选、论断核验、证据综合、英文撰稿 |
+| **不负责** | 检索文献、核验引文、撰写正文 | 替用户决定研究定位与最终判断 |
+| **输入** | 英文拟定标题 + 初步研究目标 | `topic.md` + `discussion_summary.md` + 可选 `existing_papers.bib` |
+| **输出** | `input/discussion_summary.md`（14 章节、带溯源标签） | `review_brief.md`、`records.csv`、`evidence.csv`、`claims.csv`、`manuscript.md`、审计报告 |
+| **核心约束** | 不把 AI 建议当成用户确认，不虚构讨论 | 不把讨论总结当文献证据，不编造文献、检索数量与 DOI |
+
+关键设计：**ChatGPT 讨论总结属于待核实的研究输入，不是可以直接引用的文献证据**。若把讨论总结直接交给写作 Skill 扩写成正文，其中未经核实的判断、分类和参考文献会原样进入稿件。正确做法是把它转成待研究问题、待检索方向与待核验论断清单。
+
+---
+
+### review-dialogue-architect（综述选题孵化与批判性讨论）
+
+把一个拟定英文标题和初步研究目标，通过**多轮真实对话**逐步推进为可交接的研究框架，最终产出 `discussion_summary.md` 交给下游 `evidence-first-review-writer`。它不是一次性生成综述大纲的工具，而是交互式的科研构思与学术讨论 Skill。
+
+- **五种模式**：`interactive`（默认，多轮讨论）、`bootstrap`（暂时无法回答时先给明确标记为 provisional 的框架）、`resume`（接续已有讨论记录，保留既有决定与反转）、`export`（导出交接文件）、`revise`（接受新修正，并作废依赖旧假设的分类节点）
+- **决策溯源四类标签**：`USER_GIVEN`（用户给出）、`USER_CONFIRMED`（对话中明确认可）、`ASSISTANT_PROPOSED`（AI 建议，尚未采纳）、`OPEN`（未解决，附后果与解决路径）
+- **讨论按五步推进而非固定轮数**：含义与范围 → 领域版图与概念结构 → 对抗性质疑 → 收敛与研究策略 → 交接
+- 每轮至少给出一条新推论、实质批评或有信息量的替代方案；分类体系在被文献证实前一律按假设处理，不写成既定共识
+- 明确禁止编造用户确认、文献检索结果或实验发现；一个模型扮演多个审稿人只是"一个模型的多种批评"，不是多个独立专家评审
+- 完整规则见 [review-dialogue-architect/SKILL.md](review-dialogue-architect/SKILL.md)
+
+第一次使用只需要两个输入，不必预先准备文献清单或大纲：
+
+- **输入 A**：拟定的英文综述标题（可以是暂定标题）
+- **输入 B**：初步研究目标（允许是尚未整理清楚的思路）
+
+启动提示词：
+
+```text
+请使用 $review-dialogue-architect Skill。
+
+综述标题：
+<英文题目>
+
+初步研究目标：
+<目标，可以写得比较粗略>
+
+请进入 INTERACTIVE 模式：
+- 首先分析研究定位和潜在问题。
+- 独立提出替代框架与学术质疑。
+- 与我逐轮深入讨论。
+- 保留已确认和未解决的问题。
+- 不要立即生成最终总结或正文。
+- 只有当我要求导出时，才输出 discussion_summary.md。
+```
+
+讨论过程中的反馈可以像正常科研争论一样直接，例如"我认为按 Attention 类型分类不合理，这些方法可能同时具备多种交互机制，请重新审视分类维度"。Skill 应当据此重做分析，而不是坚持原框架，也不应把先前的建议自动标为用户已认可。
+
+讨论成熟后导出：
+
+```text
+请使用 $review-dialogue-architect 的 EXPORT 模式，生成 input/discussion_summary.md：
+
+要求：
+- 严格遵循 Skill 规定的 14 章节结构。
+- 保留原始目标、已确认决定、被否定方案及原因。
+- 区分 USER_CONFIRMED、ASSISTANT_PROPOSED、OPEN、DISPUTED。
+- 区分已核验证据与待验证科学假设。
+- 包含最终方法学分类、英文大纲和图表规划。
+- 包含后续真实文献检索与核验任务。
+- 不得编造文献、科研结论或用户确认。
+- 输出必须独立于当前对话，能直接供下游 Skill 使用。
+- 导出后做完整性检查，不要开始正文写作。
+```
+
+导出文件是**研究构思的交接件**，不是已经完成文献验证的综述正文。
+
+### evidence-first-review-writer（证据优先的英文综述写作）
+
+按 `narrative-critical`（默认）/ `systematic` / `scoping` 三种综述类型，把上游的研究框架推进为可溯源的英文综述。核心是三个必须分开的问题：**(1) 文献是否存在；(2) 文献是否支持这条确切论断；(3) 证据的可信度与适用性如何**——DOI 解析成功只回答了第一条的一部分。
+
+- **三层证据链**：`records.csv`（候选记录，稳定 ID）→ `evidence.csv`（章节/页码/图表、被测论断、数据设置、模型、对照、指标、划分、局限）→ `claims.csv`（每条论断绑定一条或多条证据，必须含反证）
+- 检索结果在核对标题/年份/DOI 前一律标 `metadata_status=unverified`；论断在原文核实前一律 `support_status=unknown`；只读到摘要时必须披露
+- **不允许**在未实际完成检索、筛选、登记的情况下自称 systematic / scoping / PRISMA-compliant，也不允许编造检索数量、检索日期或"已做双人筛选"
+- 保留矛盾结论与负面结果，区分同一数据集下的头对头比较与跨论文数字：划分方式、靶点重叠、数据泄漏、测定端点不同都会让朴素排名失效
+- 未真正执行时可用的工具：Europe PMC 检索（`search_epmc.py`）与 Crossref DOI 元数据核对（`verify_dois.py`），两者都是**可选联网**工具，网络失败时不写盘、不假装完成
+- 完整规则见 [evidence-first-review-writer/SKILL.md](evidence-first-review-writer/SKILL.md)
+
+六阶段推进，每个阶段都有可检查的产物：
+
+| 阶段 | 交给 Skill 的任务 | 应得到的结果 |
+|---|---|---|
+| 1. 定位 | 分析标题、讨论总结与已有综述 | `review_brief.md`、创新定位、候选大纲 |
+| 2. 文献检索 | 设计并执行多源学术检索 | `records.csv`、`search_log.csv` |
+| 3. 文献核验 | 去重、筛选、读取全文、提取证据 | `screening.csv`、`evidence.csv` |
+| 4. 分类与综合 | 比较模型、方法与局限，检验分类是否被文献支持 | Taxonomy、比较矩阵、`claims.csv` |
+| 5. 英文写作 | 基于已核验证据逐章写作 | `manuscript.md` |
+| 6. 审稿修订 | 检查论断、引文、逻辑与格式要求 | 审计报告、修改后的稿件 |
+
+建议的第一阶段提示词（明确要求"先不写正文"）：
+
+```text
+请使用 $evidence-first-review-writer Skill，开始一个英文科研综述项目。
+
+输入文件：
+1. input/topic.md：综述主题及初步研究目标。
+2. input/discussion_summary.md：此前与 ChatGPT 深入讨论后的总结。
+3. input/existing_papers.bib：已有参考文献（如果存在）。
+
+基本要求：
+- 目标是具有批判性分析的英文科研综述。
+- 默认采用 Critical Narrative Review。
+- ChatGPT 讨论总结仅作为研究输入，不能直接当作文献证据。
+- 不要立即撰写英文正文。
+
+第一阶段：
+1. 分析标题、研究边界和综述定位。
+2. 提取已有研究思路、方法分类、关键论断和争议点。
+3. 标记已核实、待核实、作者提出和存在争议的内容。
+4. 检索已有相关综述，分析差异化贡献。
+5. 提出分类体系、英文大纲和文献检索计划。
+6. 输出 Markdown 文件供审核。
+
+完成第一阶段后停止，不自动进入正文写作。
+```
+
+建议人工把关的三个节点：
+
+- **节点 A：研究定位与分类体系** —— 与已有综述相比是否有足够明确的学术贡献；分类轴是否同层级、是否重叠
+- **节点 B：核心文献与证据矩阵** —— 覆盖是否合理、证据是否充分、有无明显遗漏与不公平比较
+- **节点 C：英文综述完整大纲** —— 章节之间的论证关系、表格与图示设计是否成立
+
+本地辅助命令（标准库即可，在 Skill 目录下运行）：
+
+```bash
+python scripts/reviewkit.py init --out ./my-review --topic "<主题>" --type narrative-critical
+python scripts/search_epmc.py --project ./my-review --query "<检索式>" --max-results 100   # 需联网
+python scripts/reviewkit.py dedupe --input ./my-review/records.csv --out ./my-review
+python scripts/reviewkit.py audit  --project ./my-review --manuscript ./my-review/manuscript.md
+python scripts/verify_dois.py --records ./my-review/records.csv --out ./my-review/doi_report.csv  # 需联网
+```
+
+注意这些脚本的能力边界：`audit` 只校验 ID、模式链接与引用键，不判断科学真伪；`verify_dois` 只核对 Crossref 的题名/年份身份，不证明文献支持某条论断，也不会自动提升元数据核验状态。它们也不是"能自动访问所有学术数据库、读完所有全文并直接投稿"的系统——第二阶段必须真实执行检索，不能由模型凭记忆生成文献清单。
+
 ### 安装与使用
 
 将对应 skill 文件夹复制到 Claude Code 的 skills 目录即可：
@@ -146,6 +305,8 @@ cp -r research-paper-interpreter ~/.claude/skills/
 cp -r review-paper-interpreter  ~/.claude/skills/
 cp -r research-idea-concretizer ~/.claude/skills/
 cp -r research-idea-paper-potential ~/.claude/skills/
+cp -r review-dialogue-architect   ~/.claude/skills/
+cp -r evidence-first-review-writer ~/.claude/skills/
 
 # 或仅当前项目安装
 mkdir -p .claude/skills
@@ -153,25 +314,33 @@ cp -r research-paper-interpreter .claude/skills/
 cp -r review-paper-interpreter  .claude/skills/
 cp -r research-idea-concretizer .claude/skills/
 cp -r research-idea-paper-potential .claude/skills/
+cp -r review-dialogue-architect   .claude/skills/
+cp -r evidence-first-review-writer .claude/skills/
 ```
 
-### Codex 中的药物手稿 Skills 安装
+### Codex / DSH 中的 Skills 安装
 
-两个药物属性预测手稿 skill 按 Codex 的 skill 目录格式提供。安装时保留完整目录，特别是 `references/`、`assets/` 和 `examples/`：
+药物手稿与综述 skill 均按 Codex 的 skill 目录格式提供。安装时保留完整目录，特别是 `references/`、`assets/`、`scripts/` 与 `tests/`：
 
 ```bash
 # 当前项目
 mkdir -p .agents/skills
 cp -r drug-property-manuscript-from-scratch .agents/skills/
 cp -r drug-property-manuscript-rebuild .agents/skills/
+cp -r review-dialogue-architect .agents/skills/
+cp -r evidence-first-review-writer .agents/skills/
 
 # 或安装到用户级目录
 mkdir -p ~/.agents/skills
 cp -r drug-property-manuscript-from-scratch ~/.agents/skills/
 cp -r drug-property-manuscript-rebuild ~/.agents/skills/
+cp -r review-dialogue-architect ~/.agents/skills/
+cp -r evidence-first-review-writer ~/.agents/skills/
 ```
 
 在 Codex 中可显式调用 `$drug-property-manuscript-from-scratch` 或 `$drug-property-manuscript-rebuild`；各自的 README 说明了适用场景和输入方式。
+
+上述两个综述 skill 也都可直接放进 DSH 的用户级技能目录 `~/.dsh/skills/`（或项目级 `.dsh/skills/`），放入后即出现在会话的技能列表中，无需重启。
 
 安装后在 Claude Code 中可直接描述任务，也可以显式指定 skill。例如可以先说"使用 research-idea-concretizer 把这个模糊 seed 扩展为多个正交候选 idea"，再说"使用 research-idea-paper-potential 评估这些候选的论文潜力"。论文解读也可以指定聚焦方向，例如：
 
