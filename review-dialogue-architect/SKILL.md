@@ -4,7 +4,7 @@ description: Conduct a rigorous, multi-turn scientific discussion from a review 
 license: MIT
 compatibility: Agent Skills-compatible ChatGPT/Codex hosts; Python >=3.10 standard library for optional local handoff validation. Web and file tools are optional and must never be claimed unless actually used.
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
   author: "Original research-dialogue workflow"
 ---
 
@@ -38,21 +38,31 @@ Inputs: (A) review topic/working title, (B) user's initial research goals; optio
 
 Create a brief **topic model**: exact user title/goal, key concepts, application context, intended contributions, boundary hypotheses, and ambiguous terms. Distinguish the user's statements from your own proposed interpretations. Do not turn an open question into an agreed premise. For review type, propose `narrative-critical` unless the user's goals actually require a systematic/scoping method; refer to `references/discussion_protocol.md`.
 
-### 2. Lead a progressive substantive dialogue
+### 2. Lead an adaptive, substantive multi-round dialogue (v1.1)
 
-Use flexible rounds **rather than mandatory fixed turn counts**:
+**Default target: 10–12 substantive user–assistant exchanges, not a fixed count, minimum, promise, or an excuse to pad the discussion.** One round means the researcher provides a real input/decision and the assistant responds with meaningful scientific analysis. Internal reasoning, tool calls, and an invented "user" response do not count. A short simple topic may legitimately converge earlier; an intricate disputed topic may need 15–25 rounds. If the user asks for handoff at any time, honor that request and mark unresolved sections `provisional` instead of blocking.
 
-1. **Meaning and scope** — sharpen problem, definitions, inclusion/exclusion, disciplinary audience, and what success would look like.
-2. **Landscape and conceptual structure** — identify primary paradigms, competing classification axes, neglected dimensions, and alternatives. A classification is a **hypothesis** until the literature is mapped.
-3. **Challenge and adversarial evaluation** — stress-test the user's and your own favored assumptions; surface counterexamples, hidden overlaps, methodological comparability issues, and likely reviewer objections. Use `references/critical_reasoning.md`.
-4. **Convergence and research strategy** — recommend a defensible provisional thesis, original contribution, comparison axes, crucial evidence gaps, figure/table ideas, and possible outline. Explicitly surface remaining competing options.
-5. **Handoff** — write `discussion_summary.md` with provenance and a prioritized source-verification queue; see `references/handoff_contract.md`.
+Use these iterative phases, revisiting earlier phases when later criticism changes assumptions:
 
-Do not merely paraphrase the user. In **each substantive turn** provide at least one concrete new implication, meaningful criticism, or informative alternative **when evidence and scope permit**. Ask a single discriminating follow-up question when its answer would materially change the framework; otherwise continue the analysis without stalling. Do not pepper the user with checklists, repeat settled questions, or seek approval of every minor detail. A scientific disagreement is allowed; explain the tradeoff concisely.
+1. **P1 / Positioning:** clarify goal, scope, exclusions, review type, audience, and ambiguous concepts. Approx. 1–2 rounds.
+2. **P2 / Competing frameworks:** generate and stress-test at least two organizing frames; distinguish conceptual layers, axes, overlaps, and boundary cases. Approx. 3–4 rounds.
+3. **P3 / Critical evaluation:** challenge favored interpretations and assistant proposals, examine possible counterexamples, evidence gaps, benchmark comparability, and reviewer objections. Approx. 3–4 rounds.
+4. **P4 / Research convergence:** articulate central questions, provisional thesis and contributions, evidence requirements, outline logic, and figures/tables without claiming novelty. Approx. 2–3 rounds.
+5. **P5 / Author-controlled handoff:** present remaining uncertainties and offer export **only if the user wants it**. Export is not counted as a substantive debate round.
+
+These allocations are examples, not enforced quotas. Read `references/adaptive_dialogue_v1.1.md` before running a long dialogue. Apply the phase quality gates specified there. A gate passes only after the relevant topic has been **critically examined**, not because a related phrase appears in an outline. A user may deliberately defer some questions downstream; explicitly record the deferral and limitations rather than inventing coverage.
+
+**Every substantive reply:** provide a consequential analysis/criticism/alternative; explain its effect on the review; carry forward decided points; ask **at most one high-impact research decision question** (unless the researcher asks for more). For an already answered question, do not ask again. Do not jump straight to a finished outline or `discussion_summary.md` during exploratory phases unless explicitly requested.
+
+**Coverage tracking:** periodically assess 15 dimensions across P1–P4 using `absent` / `proposed` / `examined`. Keep factual evidence state and user-confirmed decision state separate. Optionally use `scripts/dialogue_tracker.py` to store a machine-readable, self-reported log. At least every 2–3 exchanges, silently update it when supported; brief checkpoint reports are acceptable but should not overwhelm the scientific discussion.
+
+**Saturation:** if the last three *recorded* exchanges yielded no substantive new insights, do **not** automatically end. If gates are incomplete, change analytical perspective, introduce counterexamples, or reassess assumptions. If gates are ready, suggest (never perform) a final review/export. This is a transparent, annotation-based heuristic, **not** automatic semantic novelty detection.
+
+**Adaptive extension:** when round 12 is reached and important gates or critical disputes remain, explain what is unresolved and propose a justified three-round extension; it is not a hard ceiling. If a researcher asks to continue, do so. Do not enforce a maximum that discards their questions. The researcher decides when the dialogue is sufficient, even when a tracker labels it ready.
 
 ### 3. Keep a living, non-fictional decision and provenance record
 
-Track (in discussion or `notes/session_state.md` when files are available):
+Track (in discussion or `notes/session_state.md` and optionally `notes/dialogue_state.json` when files are available):
 
 - `USER_GIVEN` — input exactly or faithfully supplied by the user.
 - `USER_CONFIRMED` — specifically endorsed by the user in the actual conversation.
@@ -77,7 +87,15 @@ Use exactly the canonical structure in `assets/discussion_summary.template.md` a
 
 Mark stage `dialogue-complete` only after genuine substantive interaction or user-reviewed decisions; otherwise `provisional`. A complete dialogue does **not** mean the literature has been verified. If files are supported, create actual files; if not, output full Markdown in chat, clearly labeled as copyable content. The optional `scripts/handoff.py` validates structure and exports the draft to the downstream input path. Validation is **structural**, never a scientific certification.
 
-**Release gates before handoff:**
+**Final review gate (human-authoritative; present it before suggesting export, never automatic):**
+- review P1–P4 for missing or merely proposed dimensions;
+- identify unresolved critical disputes and their consequences;
+- report whether substantive novelty has stalled, without interpreting that alone as readiness;
+- show what the author has actually confirmed versus what remains only suggested;
+- ask whether to continue, revise the framework, or export only when a choice materially matters;
+- honor any explicit export request immediately, preserving uncertainty with `stage: provisional` as needed.
+
+**Release checks for the exported content:**
 - faithful statement of user's goals and immutable constraints;
 - clear scope and explicit exclusions;
 - central thesis/questions and argument-driven outline;
@@ -94,6 +112,7 @@ If evidence is missing, **export uncertainty**, not invented certainty. Do not a
 
 Read selectively:
 - `references/discussion_protocol.md` — dialogue turns, checkpoints and session-state discipline.
+- `references/adaptive_dialogue_v1.1.md` — default 10–12 exchange budget, phase gates, coverage, saturation and adaptive extension.
 - `references/critical_reasoning.md` — taxonomy design, stress tests, novelty claims, rival hypotheses.
 - `references/biomedical_ai_lenses.md` — AI drug discovery and computational biology lenses when relevant.
 - `references/handoff_contract.md` — exact downstream Markdown contract and evidence-status rules.
@@ -101,6 +120,7 @@ Read selectively:
 - `assets/CHATGPT_STARTER_PROMPT.md` — use in ChatGPT chats without installed Skills.
 - `assets/CODEX_STARTER_PROMPT.md` — Codex initial prompt.
 - `scripts/handoff.py` — optional deterministic init/validate/export.
+- `scripts/dialogue_tracker.py` — optional deterministic tracker for authored round annotations and heuristic phase status (not semantic or scientific validation).
 
 ## Example triggers
 

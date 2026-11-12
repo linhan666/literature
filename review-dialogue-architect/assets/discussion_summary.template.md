@@ -122,9 +122,13 @@ Provide 5–9 argument-driven sections with **what each section needs to demonst
 
 **Recorded reversals:** [ACTUAL USER CORRECTIONS WITH PREVIOUS AND UPDATED DECISIONS, OR NONE].
 
+**Dialogue process (v1.1, self-reported):** [REAL EXCHANGE COUNT; 10–12 IS ONLY A SOFT BUDGET]. State which phase gates were critically examined, where coverage remains proposed/absent, and any justified extensions. Never claim discussion quality was automatically verified.
+
 ## 13. Open questions and prioritized next steps
 
 **Unresolved decisions:** [OPEN, with consequence and recommended way to decide. Do not present as confirmed.]
+
+**Saturation and final review gate:** [STATE WHETHER OBSERVED, WITH LIMITATIONS; WHETHER AUTHOR EXPLICITLY REQUESTED EXPORT; MARK PROVISIONAL IF REQUIRED. DO NOT INVENT APPROVAL.]
 
 **What would invalidate the current architecture:** [SOURCES / RESULTS / COUNTEREXAMPLES / CONCEPTUAL ISSUES].
 

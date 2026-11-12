@@ -59,7 +59,8 @@ literature/
 │   ├── assets/
 │   ├── examples/
 │   └── references/
-├── review-dialogue-architect/        # 综述选题孵化与批判性讨论（流水线上游）
+├── review-dialogue-architect/        # 综述选题孵化与批判性讨论（流水线上游，v1.1）
+│   ├── CHANGELOG.md
 │   ├── SKILL.md
 │   ├── agents/
 │   ├── assets/
@@ -171,16 +172,19 @@ literature/
 
 ---
 
-### review-dialogue-architect（综述选题孵化与批判性讨论）
+### review-dialogue-architect（综述选题孵化与批判性讨论，v1.1）
 
 把一个拟定英文标题和初步研究目标，通过**多轮真实对话**逐步推进为可交接的研究框架，最终产出 `discussion_summary.md` 交给下游 `evidence-first-review-writer`。它不是一次性生成综述大纲的工具，而是交互式的科研构思与学术讨论 Skill。
 
 - **五种模式**：`interactive`（默认，多轮讨论）、`bootstrap`（暂时无法回答时先给明确标记为 provisional 的框架）、`resume`（接续已有讨论记录，保留既有决定与反转）、`export`（导出交接文件）、`revise`（接受新修正，并作废依赖旧假设的分类节点）
-- **决策溯源四类标签**：`USER_GIVEN`（用户给出）、`USER_CONFIRMED`（对话中明确认可）、`ASSISTANT_PROPOSED`（AI 建议，尚未采纳）、`OPEN`（未解决，附后果与解决路径）
-- **讨论按五步推进而非固定轮数**：含义与范围 → 领域版图与概念结构 → 对抗性质疑 → 收敛与研究策略 → 交接
-- 每轮至少给出一条新推论、实质批评或有信息量的替代方案；分类体系在被文献证实前一律按假设处理，不写成既定共识
+- **默认 10–12 轮实质交换**：一轮指研究者给出真实输入或决策、助手给出有信息量的科学分析；内部推理、工具调用与虚构的“用户回答”都不计入。轮数是目标而非配额——简单题目可以更早收敛，争议大的题目可以到 15–25 轮，研究者任何时候要求导出都应当被接受（未解决部分标 `provisional`）
+- **P1–P4 阶段门槛 + P5 作者控制的交接**：定位 → 竞争性框架（至少两套组织方案互相压力测试）→ 批判性评估（反例、证据缺口、评测可比性、审稿人质疑）→ 研究收敛；门槛只有在相关议题被**批判性检验**后才算通过，大纲里出现相关措辞不算，研究者主动延后的问题要如实记录为延后
+- **15 个覆盖维度**按 `absent` / `proposed` / `examined` 记录（P1 4 项、P2 4 项、P3 3 项、P4 4 项）；分类体系在被文献证实前一律按假设处理
+- **饱和启发式与自适应延长**：若最近三轮*已记录*的交换没有产生实质新见解，不自动结束，而是换视角、引入反例；12 轮后仍有未决高优先级争议或门槛未过时，说明未决项并提出有理由的 +3 轮延长。这个判断只是标注式启发，不是语义上的“研究已充分”证明
+- **8 种溯源状态**，并区分决策状态与证据状态：`USER_GIVEN` / `USER_CONFIRMED` / `ASSISTANT_PROPOSED` / `OPEN` / `DISPUTED`，以及 `BACKGROUND_UNVERIFIED` / `SOURCE_LOCATED` / `SOURCE_CHECKED`（只核对元数据不算 `SOURCE_CHECKED`）
+- 每轮至少给出一条新推论、实质批评或有信息量的替代方案，并说明它对综述设计的影响；每轮最多只提一个高影响的研究决策问题，已答复的不再追问
 - 明确禁止编造用户确认、文献检索结果或实验发现；一个模型扮演多个审稿人只是"一个模型的多种批评"，不是多个独立专家评审
-- 完整规则见 [review-dialogue-architect/SKILL.md](review-dialogue-architect/SKILL.md)
+- 完整规则见 [review-dialogue-architect/SKILL.md](review-dialogue-architect/SKILL.md)，版本变更见 [CHANGELOG.md](review-dialogue-architect/CHANGELOG.md)
 
 第一次使用只需要两个输入，不必预先准备文献清单或大纲：
 
@@ -227,6 +231,22 @@ literature/
 ```
 
 导出文件是**研究构思的交接件**，不是已经完成文献验证的综述正文。
+
+可选的本地对话追踪器 `scripts/dialogue_tracker.py`（标准库，只把自报标注写成 JSON，不读对话、不判语义、不替代研究者判断）：
+
+```bash
+python scripts/dialogue_tracker.py init   --project ./my-review
+python scripts/dialogue_tracker.py record --project ./my-review --phase P2-frameworks --novelty substantial \
+    --user-input "<研究者本轮的真实输入>" --analysis "<本轮给出的分析>" --question "<一个关键问题>"
+python scripts/dialogue_tracker.py coverage --project ./my-review --dimension taxonomy --level examined
+python scripts/dialogue_tracker.py issue    --project ./my-review --severity critical --description "<未决争议>"
+python scripts/dialogue_tracker.py resolve  --project ./my-review --id I1 --resolution "<处理结论>"
+python scripts/dialogue_tracker.py extend   --project ./my-review --reason "<未决高优先级项>" --rounds 3
+python scripts/dialogue_tracker.py status   --project ./my-review
+```
+
+它的回归测试只验证代码行为（例如 critical 争议即使覆盖度满也不得出"可以导出"的结论），
+**不验证研究质量，也不证明对话中真的获得了作者同意**。
 
 ### evidence-first-review-writer（证据优先的英文综述写作）
 

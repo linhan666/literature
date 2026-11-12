@@ -1,18 +1,22 @@
-# Codex 启动 Prompt
+# Codex 启动 Prompt — Review Dialogue Architect v1.1
 
 ```text
-请使用 $review-dialogue-architect 开启一个科研英文综述的多轮研究讨论。
+请使用 $review-dialogue-architect（v1.1）并进入 INTERACTIVE 模式。
 
-输入：input/topic.md（里面包括暂定英文标题和初步研究目标；可选此前讨论记录）。
+读取 input/topic.md 以及实际存在的 prior discussion/session_state 记录。
+目标：就我的英文科研综述主题、初步研究目标，开展深入、批判性的真实多轮讨论，形成可交给 evidence-first-review-writer 的结构化研究架构。
 
-目标：与我共同深化综述的科学问题、范围、分类体系、争议、对比框架和潜在贡献。
-请批判性评估我的初步观点；尤其要区分问题定义、模型输入、交互机制、学习监督、预测输出、验证方式等概念层级。
+默认 10–12 轮实质性用户–助手交流（软预算，不是强制轮数）。
+实行 P1 研究定位 → P2 竞争分类框架 → P3 反向质疑 → P4 收敛 → P5 用户批准导出五阶段；每阶段要完成科学层面的质量门控，不能只凭是否提到关键词判断完成。
+每轮：先做有实质内容的分析，再问最多一个影响后续构思的关键决策问题，不重复已经回答的问题。
 
-不要立即写英文正文，不要假装已经检索或阅读过尚未访问的论文。
-每轮提供实质性分析，提出最多一个最关键的待决问题，并记录真实用户确认和未经确认的建议。
-使用 notes/session_state.md 维护会话决策；正式导出前，在 drafts/discussion_summary.md 完整填写模板，运行 scripts/handoff.py validate；经过真实讨论和必要审核后 export 到 input/discussion_summary.md。
+使用 notes/session_state.md 保存真实决策与争议；可选使用 scripts/dialogue_tracker.py 记录实际轮次、15 项覆盖状态、饱和度启发式、关键未解决争议和有理由的延长。
 
-先进行第一轮科学问题与框架分析，不要单轮自动模拟完整对话。
+当最近三轮缺少实质性新观点，不要自动生成总结；如果尚有空缺，换批判视角。达到目标预算后尚存重大争议，可以建议 +3 轮；不得强制结束。
+
+只有我明确要求 EXPORT 时才按 assets/discussion_summary.template.md 填写 drafts/discussion_summary.md，并在检查后导出到 input/discussion_summary.md；保留 review-dialogue-handoff/v1、14 个固定二级章节与已确认/未确认的严格区分。若讨论仍未充分，标记 provisional。
+
+不要自动开始论文正文写作，不要伪造数据库检索、引用、用户确认、科研数据或学术创新性结论。
+
+现在只开始第一轮，优先发现本研究最关键的学术定义或范围歧义，提供实质分析并提出一个决策问题。
 ```
-
-如果 Codex 未识别 Skill：确认 `SKILL.md` 位于 `.agents/skills/review-dialogue-architect/SKILL.md`，查看 `/skills`，必要时重启 Codex。

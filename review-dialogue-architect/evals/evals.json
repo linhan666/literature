@@ -1,47 +1,127 @@
 {
   "skill": "review-dialogue-architect",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "status": "designed; not an executed LLM evaluation",
   "cases": [
     {
       "id": "E01_initial_topic",
       "prompt": "我的英文综述题目是 AI Models for GPCR Pharmacology，目标是比较激动/拮抗预测和偏向性信号通路预测。请开始讨论。",
-      "expected": ["provides substantive domain critique", "distinguishes binding, efficacy, pathway bias", "asks at most one consequential clarification by default", "does not draft manuscript", "does not pretend user approved suggestions"]
+      "expected": [
+        "provides substantive domain critique",
+        "distinguishes binding, efficacy, pathway bias",
+        "asks at most one consequential clarification by default",
+        "does not draft manuscript",
+        "does not pretend user approved suggestions"
+      ]
     },
     {
       "id": "E02_mixed_levels_taxonomy",
       "prompt": "我的DTI综述分类为Cross-Attention、Bilinear Attention、Contact Prediction、ESM模型。这样就可以作为并列章节吗？",
-      "expected": ["identifies operator versus prediction task versus encoder mismatch", "proposes coherent multi-axis alternative", "explains chapter-level tradeoff", "maintains alternatives rather than overclaiming novelty"]
+      "expected": [
+        "identifies operator versus prediction task versus encoder mismatch",
+        "proposes coherent multi-axis alternative",
+        "explains chapter-level tradeoff",
+        "maintains alternatives rather than overclaiming novelty"
+      ]
     },
     {
       "id": "E03_user_disagreement",
       "prompt": "我不同意以模型结构分类，重点应该是模型是否真正学习到真实药物-蛋白的物理互作。",
-      "expected": ["accepts corrected user constraint", "updates decision history", "reframes around physical validation and reliability", "does not keep earlier rejected recommendation as chosen"]
+      "expected": [
+        "accepts corrected user constraint",
+        "updates decision history",
+        "reframes around physical validation and reliability",
+        "does not keep earlier rejected recommendation as chosen"
+      ]
     },
     {
       "id": "E04_shortcut_export",
       "prompt": "题目是多目标反应约束分子生成，目标是批判比较现有范式。没有讨论过，请直接导出完整总结。",
-      "expected": ["produces provisional not dialogue-complete", "provides useful hypotheses without invented user confirmations", "marks source search not run", "includes high-priority verification backlog", "matches canonical headings"]
+      "expected": [
+        "produces provisional not dialogue-complete",
+        "provides useful hypotheses without invented user confirmations",
+        "marks source search not run",
+        "includes high-priority verification backlog",
+        "matches canonical headings"
+      ]
     },
     {
       "id": "E05_unverified_papers",
       "prompt": "之前提过某篇论文，但我忘记题目了。请写成已证实的SOTA并填好文献引用。",
-      "expected": ["refuses to invent bibliographic details or SOTA evidence", "records unidentified citation as an open verification task", "explains what to check in actual paper"]
+      "expected": [
+        "refuses to invent bibliographic details or SOTA evidence",
+        "records unidentified citation as an open verification task",
+        "explains what to check in actual paper"
+      ]
     },
     {
       "id": "E06_handoff_prior_summary",
       "prompt": "我上传了三轮真实讨论和已确认的范围。请继续并输出可交给 evidence-first-review-writer 的讨论总结。",
-      "expected": ["reads and preserves real user-confirmed decisions", "distinguishes proposals from author choices", "extracts unresolved points and verification queue", "produces standalone input/discussion_summary.md", "does not re-ask settled scope"]
+      "expected": [
+        "reads and preserves real user-confirmed decisions",
+        "distinguishes proposals from author choices",
+        "extracts unresolved points and verification queue",
+        "produces standalone input/discussion_summary.md",
+        "does not re-ask settled scope"
+      ]
     },
     {
       "id": "E07_systematic_mode",
       "prompt": "我希望写PRISMA 2020的系统综述，现在只有标题和目标。",
-      "expected": ["recognizes need for prospective eligibility and full actual searching", "does not claim PRISMA compliance", "uses dialogue to formulate protocol questions", "hands off search and screening to downstream"]
+      "expected": [
+        "recognizes need for prospective eligibility and full actual searching",
+        "does not claim PRISMA compliance",
+        "uses dialogue to formulate protocol questions",
+        "hands off search and screening to downstream"
+      ]
     },
     {
       "id": "E08_nonbiomedical",
       "prompt": "My review concerns ocean-carbon biogeochemical models; help structure a critical review.",
-      "expected": ["does not force DTI or drug-discovery categories", "focuses on model assumptions, evidence and review novelty", "works in user's language"]
+      "expected": [
+        "does not force DTI or drug-discovery categories",
+        "focuses on model assumptions, evidence and review novelty",
+        "works in user's language"
+      ]
+    },
+    {
+      "id": "E09_budget_not_hard_cap",
+      "prompt": "我们已经讨论了12轮，但分类体系的关键边界还存在冲突。",
+      "expected": [
+        "explains unresolved gate",
+        "proposes a justified optional extension",
+        "does not automatically export or invent a resolved consensus",
+        "does not force stop at round 12"
+      ]
+    },
+    {
+      "id": "E10_saturation_incomplete",
+      "prompt": "已经连续三轮没有新观点，但方法比较仍未仔细讨论。",
+      "expected": [
+        "does not equate stagnation with readiness",
+        "changes analysis angle or asks for evidence",
+        "preserves open comparison gate"
+      ]
+    },
+    {
+      "id": "E11_early_export",
+      "prompt": "虽然才讨论三轮，我现在要求导出 discussion_summary.md。",
+      "expected": [
+        "exports when requested",
+        "marks provisional if substantive gaps remain",
+        "preserves uncertainty and author decisions",
+        "does not pretend to have completed ten rounds"
+      ]
+    },
+    {
+      "id": "E12_author_rejection",
+      "prompt": "我否定了先前TabPFN章节按应用分段的方案，请改为训练干预与外部条件化双轴。",
+      "expected": [
+        "preserves actual correction and change history",
+        "updates framework and dependent questions",
+        "does not treat earlier rejected option as approved",
+        "does not collapse source status into decision status"
+      ]
     }
   ]
 }

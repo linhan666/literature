@@ -1,93 +1,47 @@
-# Scientific dialogue protocol (adaptive, not a rigid questionnaire)
+# Multi-turn scientific dialogue protocol (v1.1)
 
-## Why the dialogue exists
+This protocol is an intellectual process, **not** evidence that a review has been conducted. The researcher remains the scientific decision-maker. The AI has to critically analyze, not simply echo preferences.
 
-A review theme plus initial objectives is **not** yet a publishable intellectual architecture. The task is to expose ambiguities, test relationships among concepts, elicit authorial preferences, construct alternative arguments, and preserve what must be verified from actual publications.
+## Starting a session
 
-This is a **co-reasoning method**, not an automatically valid literature-review protocol. Conversation rounds are not a substitute for searching and reading the literature. The user remains the scientific decision-maker.
+Read the actual title/goals and any available prior discussion, including user-confirmed decisions. Do not ask already answered questions. Frame one consequential ambiguity, provide a substantive critique or candidate alternative, and ask one discriminating question. A new review idea is not yet a finalized outline.
 
-## Work from established context
+## Default budget and real rounds
 
-Read the exact current message, attached `topic.md` and any discussion transcript/summary first. Preserve previously user-confirmed positions. If an earlier answer is available in the current context, do not ask it again. If a chat excerpt is missing, mark the gap and move on with a tentative interpretation. Never claim to have read earlier chats or files that the environment has not provided.
+Target **10–12 real substantive exchanges**, adaptively. Not a fixed requirement. An exchange contains real input from the researcher followed by an assistant response that advances the scientific reasoning; don't simulate responses. Use P1 (1–2), P2 (3–4), P3 (3–4), P4 (2–3) as an illustrative allocation; P5 is author-controlled export, not a mandatory debate round. If the work is finished earlier, do not pad. For complex disputes, suggest +3 rounds with a reason and update the log. The author can continue indefinitely or request early provisional export.
 
-At the start:
+## P1 — research positioning
 
-1. State the topic in faithful terms and the user's stated goals.
-2. Distinguish a working title from an agreed research question.
-3. Identify one intellectual ambiguity that most changes the review's direction.
-4. Offer an initial critical assessment or concrete candidate taxonomy, not just a request for more input.
-5. Ask **at most one high-value clarification question by default**, unless the user explicitly requests a batch of questions.
+Determine explicit objectives, implied claims in the title, review type, readership, domain boundary, and exclusions. Discuss what would be lost by narrowing or expanding scope; differentiate a review of an application area from a review of methodological mechanisms. Gate: goals, scope, exclusions, and type/audience have been critically examined or explicitly deferred with reasons.
 
-## Rounds, checkpoints, and decisions
+## P2 — conceptual organization
 
-### Round A — Scope and definitions
+Propose at least two *meaningfully different* architectures (e.g., learning intervention vs. task-level evidence; operator taxonomy vs. epistemic reliability). Identify mixing levels (input, operator, supervision, output, task). Test overlapping and boundary examples. Gate: main research questions, a candidate taxonomy, explicit boundary cases, and rival frames have been examined. The researcher need not choose a single exclusive taxonomy.
 
-Clarify the primary phenomenon, epistemic objective (explain mechanisms / compare models / map evidence / synthesize benchmarks), the intended scholarly readership, and exclusions. Distinguish *reviewing a phenomenon* from *reviewing methods applied to that phenomenon*. Identify what the title promises that the paper must deliver.
+## P3 — challenge and adversarial debate
 
-**Checkpoint example:** “The current proposal excludes purely unimodal attention and focuses on explicit inter-molecular coupling. Is that a firm scope boundary?” Ask only if it genuinely affects the classification.
+Critically test the strongest framework, using possible falsifiers, counterexamples and ambiguous cases. Ask what evidence a skeptical reviewer would require, whether headline results can be compared given differing splits/tasks/metrics, and which claims are interpretations rather than verified outcomes. Gate: counterarguments, fair comparison, and evidence limitations examined. A model proposing two critiques is not two independent reviewers.
 
-### Round B — Alternative organizing models
+## P4 — convergence
 
-Propose useful alternatives, e.g. (i) modality and interaction operator, (ii) physical supervision and observability, (iii) task and evaluation reliability. Explain what each illuminates and what each obscures. Do not presume five method names are all sibling categories; find parent/child or cross-cutting relationships. For each major group, supply one borderline case that tests the definition.
+Form a provisional central argument, 3–6 substantive research questions when appropriate, candidate contributions explicitly marked as novelty hypotheses, an argument-driven outline, figure/table rationale, and prioritized search-and-verification backlog. Gate: contributions, review outline, figures/tables, and verification backlog examined. Do not jump to a polished final outline before the user is ready.
 
-**Checkpoint:** Recommend a framework and ask for acceptance only if the choice genuinely determines the outline. Accept hybrid/multi-axis frames when a single hierarchy is misleading.
+## P5 — review and handoff
 
-### Round C — Critical confrontation
+When appropriate, report decisions, disputes, uncovered dimensions and source status. **Only export when the researcher explicitly asks or accepts an export proposal.** If needed, produce `provisional` with unresolved decisions. Export under the canonical 14 headings, maintaining the v1 handoff schema and the distinction between source evidence and user decisions. Do not automatically launch downstream writing.
 
-Challenge popular claims and the user's favorite options as well as your own. Ask: “What observation would disprove this?” “What is the alternative explanation?” “Can two methods really be compared from their published numbers?” “What evidence would a skeptical reviewer ask for?” “Is this called a research gap only because of a missing literature search?” Do not fabricate a paper as the alleged counterexample.
+## Quality, saturation and extension
 
-### Round D — Convergence
+Use the `absent` / `proposed` / `examined` coverage rubric in `adaptive_dialogue_v1.1.md`. A completed topic has been scrutinized; simply naming it is `proposed` at most. Three consecutive self-annotated `none` novelty rounds flag possible stagnation. **This cannot prove the review is ready:** incomplete gates require a new reasoning strategy; complete gates allow an export recommendation. After target-max exchanges with unresolved high-priority issues, propose additional discussion with a concrete reason. No forced stopping.
 
-Turn discussion into 3–6 major research questions, 2–4 contribution hypotheses, a prioritized evidence-verification queue, and a proposed flow of conceptual argument. Note which scientific claims are exploratory versus verified. Suggest figure/table types that actually advance argument (taxonomy schematic, assumption matrix, benchmark reproducibility matrix, failure mode map), rather than illustrations for decoration.
+## Model response template (not obligatory visible headings)
 
-### Round E — Handoff
+1. Consequential analysis, grounded in the actual project.
+2. Strongest competing explanation or failure mode.
+3. Tradeoff or adjustment of the proposed research architecture.
+4. Exactly one research decision question when needed.
+5. Update decision/coverage records if files or context permit.
 
-Export exactly when the user requests, ends the session, or asks to move downstream. No minimum round count is mandatory. With no genuine user feedback, mark `stage: provisional`. With substantive real dialogue and actual user-confirmed decisions, mark `dialogue-complete` while still recording literature verification status separately.
+## Provenance discipline
 
-## Example turn pattern
-
-**Analytical response:** “You currently group bilinear attention, co-attention and contact-map prediction together. The first two name fusion operators; the last names a supervised prediction output. That mixes different classification levels.”
-
-**Reasoned repair:** “Use two axes: interaction operator and physical supervision. Contact-map prediction can become a task or supervision dimension, not a direct sibling of co-attention.”
-
-**Consequential tradeoff:** “A two-axis frame improves conceptual orthogonality but complicates a one-dimensional paper outline. Use primary chapters by scientific question, with a matrix for operator families.”
-
-**Discriminating question:** “Should the review's central contribution be a new model taxonomy, or the reliability of interpreting learned interactions as physical contacts?”
-
-The model must not write an imaginary answer from the user to that question. If unanswered, record two alternative plans.
-
-## What counts as high-quality discussion
-
-- Reasoning advances beyond reiteration; claims have conditions of validity.
-- User and agent propositions retain attribution.
-- At least one serious competing perspective is considered, without false equivalence.
-- Proposed novelty is a **hypothesis pending verification of existing reviews**.
-- Scope and evidence requirements are concrete enough for a new assistant to continue.
-- Decisions are recorded with confirmations, not inferred from silence.
-
-## Practical state record
-
-Store after major decisions if writable workspace exists:
-
-```markdown
-# Session state (not the final handoff)
-
-## User-given and user-confirmed positions
-- USER_GIVEN: ... (from actual messages)
-- USER_CONFIRMED: ... (explicit confirmation)
-
-## Current provisional recommendations
-- ASSISTANT_PROPOSED: ... (reason and competing option)
-
-## Disputes and unresolved questions
-- OPEN: ... (consequences)
-- DISPUTED: ... (alternative A vs B)
-
-## Version changes
-- Earlier: ... / Current: ... / Trigger: actual user message or new evidence
-
-## Evidence status
-- BACKGROUND_UNVERIFIED / SOURCE_LOCATED / SOURCE_CHECKED (with real link and locator)
-```
-
-If no files can be written, keep the record in the conversation and reproduce it accurately at export.
+`USER_GIVEN` ≠ `USER_CONFIRMED` ≠ `ASSISTANT_PROPOSED`. A user refusing a classification should update the ledger, not be silently erased. An unverified claim is not a fact. Source discovery and metadata checks do not validate source-supported claims. No fake papers, searches, experiments, approvals or fabricated debate rounds.

@@ -1,131 +1,159 @@
-# Review Dialogue Architect (v1.0.0)
+# Review Dialogue Architect v1.1.0
 
-**中文说明 | English-ready handoff**
+**科研英文综述的上游研究对话 Skill｜10–12 轮弹性预算｜阶段质量门控｜研究者决定导出**
 
-一个专门用于英文科研综述**选题孵化、深度学术讨论、批判性框架构建与结构化交接**的 Agent Skill。输入可以很简短：一条拟定英文标题 + 一段初步目标描述。它通过真实的多轮用户对话建立思考框架，然后把确认过的决定、争论、未核实论断和文献检索任务整理成 `input/discussion_summary.md`，供下游 `evidence-first-review-writer` 使用。
+这个 Skill 将「拟定综述标题 + 初步研究目标」转化为实际科研讨论，通过反例、竞争框架、批判比较和用户决策记录逐步收敛研究思路。最终交付 `input/discussion_summary.md`，由下游 `evidence-first-review-writer` 负责真实文献检索、证据核验与英文写作。
 
-与“整理聊天记录”“直接写综述正文”不同，这个 Skill 要主动提出并检验框架，同时严格区分**用户要求 / 用户确认 / AI 建议 / 未解决 / 文献证据状态**。
+## v1.1 相比 v1.0 新增什么
 
-## 你能获得什么
+| 机制 | v1.1 行为 | 重要边界 |
+| --- | --- | --- |
+| 讨论预算 | 默认目标 10–12 次真实的用户–助手深入交流，简单主题可提前结束 | 不是强制最少轮数，也不是硬性上限 |
+| 阶段质量门控 | P1 研究定位、P2 竞争框架、P3 反向质疑、P4 收敛各有可审查维度 | 脚本仅依赖人工/助手填写的状态，不能证明科学质量 |
+| 覆盖追踪 | 15 个维度按 `absent` / `proposed` / `examined` 更新 | `examined` 表示实质讨论过，不等于用户同意或文献证实 |
+| 讨论饱和度提示 | 最近 3 轮记录为 `none` 时提醒换思路或审查是否收敛 | 只是记录驱动的启发式检测，不是语义判断模型 |
+| 自适应扩展 | 到达目标预算仍有重大争议，可提出 +3 轮等带理由的延长 | 不自动替用户做决定或强行结束 |
+| 最终审查门 | 梳理已确认内容、未决项、证据缺口，并请研究者选择是否导出 | **没有明确导出要求时绝不自动生成最终总结** |
 
-- 精确的问题定义、范围/排除条件、预期受众以及综述模式建议。
-- 多种分类/叙事架构与对其本体层级、重叠、边界案例的批判性检验。
-- 核心科学问题、可能的综述差异化贡献、拟定论证结构、图表设计。
-- 高风险论断、反例方向、证据检索计划；所有科学与新颖性断言明确标记待核实。
-- **唯一必需的最终文件：`input/discussion_summary.md`**，另含英文 handoff brief 以便下游使用。
+除新增可选追踪器外，保持 v1.0 **14 章节 `discussion_summary.md` 格式和 `review-dialogue-handoff/v1` schema** 不变，兼容原有下游 `evidence-first-review-writer`。
 
-## 与 Evidence-First Review Writer 的关系
+## 推荐流程
 
 ```text
-研究者：英文综述主题/初步目标
-      │
-      ▼
-review-dialogue-architect   ← 本 Skill，多轮讨论/框架构思/反向质疑
-      │
-      └── input/discussion_summary.md  [经讨论形成的研究方案；可标注 provisional]
-      │
-      ▼
-evidence-first-review-writer  ← 后续 Skill，真实检索/核验/证据综合/撰稿
-      │
-      └── references, evidence matrix, English manuscript
+标题 + 目标
+    ↓
+P1 研究定位与边界
+    ↓ (质量门控：是否实质审查过？)
+P2 分类体系和竞争框架
+    ↓
+P3 批判、反例、证据及可比性
+    ↓
+P4 学术贡献假设、论证结构、验证清单
+    ↓
+最终审查：研究者决定继续 / 修订 / 导出
+    ↓ (明确要求导出才执行)
+input/discussion_summary.md
+    ↓
+evidence-first-review-writer
 ```
 
-`discussion_summary.md` 不是可直接引用的证据。下游应当先检查已有综述、确认论文存在并逐条验证关键论断；可基于检索结果修正上游框架。
+讨论阶段可以往返循环；10–12 轮只是默认预算。如果用户第 3 轮就要导出，应生成 `provisional` 交接；如果第 12 轮仍有重大争议，解释原因并建议延长。**不能为了完成轮数人为制造问题。**
 
-## 使用方式 A：ChatGPT 普通网页对话（无需安装）
+## 方式 A：在 ChatGPT 网页中直接开始（不需要 Codex）
 
-打开 [`assets/CHATGPT_STARTER_PROMPT.md`](assets/CHATGPT_STARTER_PROMPT.md)，将其内容粘贴到新的 ChatGPT 对话，附上你的**英文综述主题和初步研究目标**，开启逐轮讨论；讨论成熟时说“导出总结”。若界面允许上传文件，也可上传 `SKILL.md` 与模板，以便模型按完整规范执行。
+打开 `assets/CHATGPT_STARTER_PROMPT.md`，复制完整 Prompt 到新对话，再填写综述标题和初步目标。普通 ChatGPT 对话并不会因为你在电脑上解压 ZIP 而自动加载本地 Skill；使用完整 Prompt 或在支持的环境中安装 Skill 才能保证指令可用。
 
-**重要**：向普通对话上传一个 ZIP 并不等于在账户中安装了一个可自动调用的 Skill。正式的可复用 Skill 通过支持 Skill 的 ChatGPT/Codex 环境加载，或打包成可安装的插件。普通网页对话最稳妥的入口是独立的启动 Prompt。
+基本启动语句：
 
-## 使用方式 B：Codex / 支持本地 Skills 的 ChatGPT
+> 请按 Review Dialogue Architect v1.1 进入 INTERACTIVE 模式。我的综述标题是 ...，初步目标是 ...。默认采用 10–12 轮的弹性讨论预算，严格阶段门控，每轮做深入批判性分析，只问一个高价值决定性问题。不要提前生成 `discussion_summary.md`，由我决定何时导出。
 
-将整个 `review-dialogue-architect/` 文件夹放进项目 `.agents/skills/`；把下游 `evidence-first-review-writer/` 并列放置：
+## 方式 B：在 Codex 安装整个 Skill
+
+将 ZIP 解压得到的 `review-dialogue-architect/` 文件夹放入项目：
 
 ```text
-my-scientific-review/
-├── .agents/skills/
-│   ├── review-dialogue-architect/SKILL.md
-│   └── evidence-first-review-writer/SKILL.md
+Scientific-Review-Project/
+├── .agents/
+│   └── skills/
+│       ├── review-dialogue-architect/
+│       │   ├── SKILL.md
+│       │   ├── references/
+│       │   ├── assets/
+│       │   ├── scripts/
+│       │   └── tests/
+│       └── evidence-first-review-writer/   # 如已安装
 ├── input/topic.md
 ├── notes/session_state.md
-├── drafts/discussion_summary.md
-└── input/discussion_summary.md            # 导出后出现
+├── notes/dialogue_state.json               # 可选日志文件
+└── drafts/discussion_summary.md            # 实际讨论后填充
 ```
 
-Codex 中通过 `$review-dialogue-architect` 显式调用，或根据任务描述自动触发；如未识别可用 `/skills` 检查，必要时重新打开会话。对 ChatGPT 的具体安装/调用能力，取决于使用的产品入口及插件权限，不要将本地目录视为自动同步到网页聊天。
+在 Codex 的项目对话中使用 `$review-dialogue-architect` 调用。若原来已安装 v1.0，建议先备份旧文件夹，然后覆盖安装 v1.1；已有的研究文件与日志请不要覆盖。
 
-### 初始化及导出命令
+## 可选命令（Windows PowerShell）
 
-在你的项目目录内运行（下面的 `SKILL_DIR` 指本 Skill 的实际路径）：
+以下在项目根目录运行；`py -3` 表示 Python 3.10+（若不可用改为 `python`）：
 
-```bash
-python SKILL_DIR/scripts/handoff.py init --project .
-# 编辑 input/topic.md，并与 Skill 多轮深入讨论；把形成的文本填入 drafts/discussion_summary.md
-python SKILL_DIR/scripts/handoff.py validate --file drafts/discussion_summary.md
-python SKILL_DIR/scripts/handoff.py export --project .
-# 导出到 input/discussion_summary.md
+```powershell
+py -3 .agents\skills\review-dialogue-architect\scripts\handoff.py init --project .
+py -3 .agents\skills\review-dialogue-architect\scripts\dialogue_tracker.py init --project .
 ```
 
-没有真实多轮讨论时，`stage: provisional`，默认导出会阻止假装完成；若你明确要先移交不成熟方案：
+`input/topic.md` 填写题目和研究目标；之后直接在 Codex/ChatGPT 中进行多轮讨论。无需由用户逐轮手工执行追踪命令；它是有文件/终端能力的代理可选的记录工具。
 
-```bash
-python SKILL_DIR/scripts/handoff.py export --project . --allow-provisional
+```powershell
+# 检查轮次、阶段门控和争议提醒
+py -3 .agents\skills\review-dialogue-architect\scripts\dialogue_tracker.py status --project .
+
+# 当你明确要求 EXPORT 后，填写草稿并执行结构校验
+py -3 .agents\skills\review-dialogue-architect\scripts\handoff.py validate --file drafts\discussion_summary.md
+
+# 实质对话已完成且你已要求导出
+py -3 .agents\skills\review-dialogue-architect\scripts\handoff.py export --project .
+
+# 若讨论不完整但你明确要求提前交接
+py -3 .agents\skills\review-dialogue-architect\scripts\handoff.py export --project . --allow-provisional
 ```
 
-如果目标文件已存在，请显式增加 `--overwrite`。命令不会偷偷替换已完成的下游输入文件。
+目标文件已存在时，导出不会默认覆盖；可在审核后选择显式 `--overwrite`。脚本不能核查论文真实性或用户是否真的作过确认，这些只能通过原始对话和外部证据确认。
 
-### 下一阶段 Prompt
+### 记录一轮实际讨论（可选）
 
-```text
-请使用 $evidence-first-review-writer，阅读 input/topic.md 和
-input/discussion_summary.md。首先核实综述定位、已有综述与候选贡献，
-逐一检验未验证的科学论断和分类边界。建立真实检索日志、来源与证据矩阵。
-不要把上游的 ASSISTANT_PROPOSED 或 BACKGROUND_UNVERIFIED 直接写成事实，
-也不要假装已有系统综述流程已经完成。先输出第一阶段研究方案供审核。
+```powershell
+py -3 .agents\skills\review-dialogue-architect\scripts\dialogue_tracker.py record --project . --phase P1-positioning --novelty substantial --user-input "实际用户输入概述" --analysis "本轮实际新增的批判分析与取舍"
+py -3 .agents\skills\review-dialogue-architect\scripts\dialogue_tracker.py coverage --project . --dimension scope --level examined --note "比较了收窄与扩展研究范围的后果"
+py -3 .agents\skills\review-dialogue-architect\scripts\dialogue_tracker.py status --project .
 ```
 
-## 文件说明
+如记录重大争议：
+
+```powershell
+py -3 .agents\skills\review-dialogue-architect\scripts\dialogue_tracker.py issue --project . --severity critical --description "分类体系混合输入、监督与交互算子层级"
+```
+
+如第 12 轮仍未解决：
+
+```powershell
+py -3 .agents\skills\review-dialogue-architect\scripts\dialogue_tracker.py extend --project . --rounds 3 --reason "需要继续核查竞争分类方案的边界及反例"
+```
+
+## 完整文件清单
 
 ```text
 review-dialogue-architect/
-├── SKILL.md                         主指令（核心必读）
-├── README.md                        本指南
+├── SKILL.md
+├── README.md
+├── CHANGELOG.md
 ├── LICENSE
-├── agents/openai.yaml               可选显示元信息
+├── agents/openai.yaml
 ├── references/
-│   ├── discussion_protocol.md       多轮讨论策略与终止条件
-│   ├── critical_reasoning.md        分类/创新/证据/论证的批判性评估
-│   ├── biomedical_ai_lenses.md      药物发现/DTI/DTA/GPCR 专项问题
-│   └── handoff_contract.md          下游输入的强约束
+│   ├── discussion_protocol.md
+│   ├── adaptive_dialogue_v1.1.md
+│   ├── critical_reasoning.md
+│   ├── biomedical_ai_lenses.md
+│   └── handoff_contract.md
 ├── assets/
-│   ├── topic.template.md            输入模板
-│   ├── session_state.template.md    对话动态决策记录
-│   ├── discussion_summary.template.md  交接文件规范
-│   ├── sample_provisional_handoff.md   虚构场景的示例，非文献检索结果
-│   ├── CHATGPT_STARTER_PROMPT.md    网页 ChatGPT 可直接粘贴的完整 Prompt
-│   └── CODEX_STARTER_PROMPT.md      Codex 初始 Prompt
-├── scripts/handoff.py               初始化/结构核查/导出，stdlib
-├── tests/test_handoff.py            确定性回归测试
-└── evals/evals.json                 行为评测情境，尚需实际 Agent 运行
+│   ├── CHATGPT_STARTER_PROMPT.md
+│   ├── CODEX_STARTER_PROMPT.md
+│   ├── topic.template.md
+│   ├── session_state.template.md
+│   ├── discussion_summary.template.md
+│   └── sample_provisional_handoff.md
+├── scripts/
+│   ├── handoff.py
+│   └── dialogue_tracker.py
+├── tests/
+│   ├── test_handoff.py
+│   └── test_dialogue_tracker.py
+└── evals/evals.json
 ```
 
-## 重要限制
+## 测试与限制
 
-- `handoff.py` 只核查元数据、章节齐全和模板残留，**不**验证观点是否有学术价值、用户是否真的确认、引文是否准确；这必须依赖实际对话与原始论文核对。
-- 例子中的科学性观点是待研究的问题，不是已验证的文献发现。不能用它们替代论文证据。
-- Skill 不是文献检索引擎，也不能替代文献数据库、同行审稿、作者的学术判断和投稿要求。
-- `dialogue-complete` 只说明讨论与作者决策达到可以交接的阶段，**绝不意味着文献/论断已经核验完成**。
+在开发容器中使用 Python 标准库运行确定性测试，覆盖模板校验、导出防覆盖、轮次记录、覆盖门控、饱和度提示、争议阻断和扩展记录。**这些是程序测试，不代表已经运行了真实用户的 10–12 轮学术对话，也不代表文献核验完成。** `evals/evals.json` 是尚未执行的行为评测计划。
 
-## 建议的真实工作节奏
+## 下游衔接
 
-建议在多轮对话中依次经历范围澄清、分类方案竞争、批判反例、收敛到主线，必要时可往返迭代。没有固定轮数：真正重要的是概念澄清、关键争论是否形成可行动的决策记录，而不是聊天记录长度。
+`input/discussion_summary.md` 必须忠实保留 `USER_GIVEN`、`USER_CONFIRMED`、`ASSISTANT_PROPOSED`、`OPEN`、`DISPUTED`，并用来源级别区分 `BACKGROUND_UNVERIFIED`、`SOURCE_LOCATED`、`SOURCE_CHECKED`。下游先确认研究定位与已有综述覆盖，再查论文、建证据矩阵、撰文。所有未经源验证的学术发现、新颖性判断、模型 SOTA 声称均应保留为待验证事项。
 
-## 设计参考（不是本包的科学证据）
-
-- Agent Skills 官方实践： https://learn.chatgpt.com/docs/build-skills
-- OpenAI skill authoring guidance: https://github.com/openai/codex/blob/main/codex-rs/skills/src/assets/samples/skill-creator/SKILL.md
-- Review methods taxonomy: Grant & Booth (2009), https://doi.org/10.1111/j.1471-1842.2009.00848.x
-- SANRA quality assessment of narrative reviews: https://doi.org/10.1186/s41073-019-0064-8
-
-MIT License applies to original code and documents in this package. External resources remain under their own licensing terms.
+本 Skill 原创代码和说明采用 MIT License；各外部参考资源版权归其原作者。
