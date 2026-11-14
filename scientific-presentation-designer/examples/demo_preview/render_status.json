@@ -1,0 +1,7 @@
+{
+  "renderer": "LibreOffice -> PDF -> PyMuPDF PNG",
+  "slides_rendered": 12,
+  "result": "render_completed",
+  "visual_inspection_completed": false,
+  "note": "Render success does not imply human or visual QA pass."
+}

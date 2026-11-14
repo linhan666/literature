@@ -1,0 +1,99 @@
+{
+  "pptx": "/mnt/data/scientific-presentation-designer/demo_scientific_report.pptx",
+  "slides": 12,
+  "static_geometry_checked": true,
+  "visual_slide_inspection_completed": false,
+  "scientific_source_verification_completed": false,
+  "critical_limitations": [
+    "A static QA script cannot detect all text overlaps/clipping",
+    "Only inspection of rendered slides can assess visual quality",
+    "Numerical claims require an independent evidence ledger"
+  ],
+  "warnings": [],
+  "slide_stats": [
+    {
+      "slide": 1,
+      "text_shapes": 10,
+      "picture_shapes": 0,
+      "min_main_text_pt": 15.2,
+      "total_text_chars": 268
+    },
+    {
+      "slide": 2,
+      "text_shapes": 15,
+      "picture_shapes": 0,
+      "min_main_text_pt": 17.0,
+      "total_text_chars": 499
+    },
+    {
+      "slide": 3,
+      "text_shapes": 21,
+      "picture_shapes": 0,
+      "min_main_text_pt": 13.8,
+      "total_text_chars": 452
+    },
+    {
+      "slide": 4,
+      "text_shapes": 16,
+      "picture_shapes": 0,
+      "min_main_text_pt": 12.5,
+      "total_text_chars": 429
+    },
+    {
+      "slide": 5,
+      "text_shapes": 22,
+      "picture_shapes": 0,
+      "min_main_text_pt": 12.3,
+      "total_text_chars": 446
+    },
+    {
+      "slide": 6,
+      "text_shapes": 21,
+      "picture_shapes": 0,
+      "min_main_text_pt": 12.1,
+      "total_text_chars": 388
+    },
+    {
+      "slide": 7,
+      "text_shapes": 31,
+      "picture_shapes": 0,
+      "min_main_text_pt": 15.0,
+      "total_text_chars": 446
+    },
+    {
+      "slide": 8,
+      "text_shapes": 15,
+      "picture_shapes": 0,
+      "min_main_text_pt": 12.4,
+      "total_text_chars": 504
+    },
+    {
+      "slide": 9,
+      "text_shapes": 6,
+      "picture_shapes": 1,
+      "min_main_text_pt": 15.0,
+      "total_text_chars": 254
+    },
+    {
+      "slide": 10,
+      "text_shapes": 14,
+      "picture_shapes": 0,
+      "min_main_text_pt": 12.3,
+      "total_text_chars": 451
+    },
+    {
+      "slide": 11,
+      "text_shapes": 17,
+      "picture_shapes": 0,
+      "min_main_text_pt": 16.0,
+      "total_text_chars": 448
+    },
+    {
+      "slide": 12,
+      "text_shapes": 8,
+      "picture_shapes": 0,
+      "min_main_text_pt": 21.0,
+      "total_text_chars": 300
+    }
+  ]
+}

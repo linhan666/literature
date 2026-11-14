@@ -1,0 +1,7 @@
+id,claim_or_figure,source_path,source_location,exact_value,units,split_or_condition,verification_status,slide_ids,notes
+DEMO-M01,Experiment pipeline,examples/example_plan.json,slides S02-S03,,N/A,Synthetic demonstration,verified,"S02;S03",Example design instruction only
+DEMO-M02,Split definitions,examples/example_plan.json,slides S03 S07 S08,,N/A,Synthetic demonstration,verified,"S03;S07;S08;S10",Conceptual distinction not a benchmark result
+DEMO-R01,Illustrative metrics,examples/example_plan.json,slides S04 S05 S07,"0.778;0.819;0.831;0.843",AUROC,Synthetic demonstration,verified,"S04;S05;S07;S10",SYNTHETIC numerical example; never cite as research evidence
+DEMO-R02,Illustrative learning curves,examples/example_plan.json,slide S06,,AUROC,Synthetic demonstration,verified,S06,SYNTHETIC trend only
+DEMO-F01,Illustrative synthetic heatmap,examples/demo_heatmap.png,image itself,,N/A,Synthetic demonstration,verified,S09,Generated only to test image embedding
+DEMO-P01,Research follow-ups,examples/example_plan.json,slides S11 S12,,N/A,Proposed experiments,verified,"S11;S12",Not carried out

@@ -1,0 +1,14 @@
+{
+  "mode": "demo",
+  "slides": 15,
+  "sources": 0,
+  "claims": 0,
+  "errors": 0,
+  "warnings": 0,
+  "messages": [],
+  "limitations": [
+    "Structural validation is not DOI resolution or original-paper review",
+    "No inference is independently verified by this script",
+    "Visual inspection is outside this script"
+  ]
+}

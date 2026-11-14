@@ -1,6 +1,6 @@
 # literature — 文献管理工具集
 
-面向科研场景的一站式文献工具集，包含七部分：
+面向科研场景的一站式文献工具集，包含十部分：
 
 1. **文献智能管理系统**（桌面应用）—— PDF 文献入库、元数据自动解析、AI 深度分析与课题建议生成；
 2. **Claude 文献阅读 Skills** —— 两个可安装的 skill，分别用于深度解读**研究型论文**和**综述型论文**；
@@ -8,7 +8,10 @@
 4. **研究想法评估 Skill** —— 从科学问题、创新性、证据和可行性等维度评估候选 idea 的论文潜力；
 5. **药物属性预测手稿 Skills** —— 分别从零组织首稿、重建已有手稿，使用真实范文校准写作与图表表达，并遵守实验和证据边界。
 6. **综述选题孵化 Skill** —— 通过多轮批判性学术讨论，把拟定标题与初步目标推进为可交接的综述研究框架；
-7. **证据优先综述写作 Skill** —— 真实检索、逐条核验、方法学分类与英文综述逐章写作，强制来源—证据—论断三层可溯源。
+7. **证据优先综述写作 Skill** —— 真实检索、逐条核验、方法学分类与英文综述逐章写作，强制来源—证据—论断三层可溯源；
+8. **AIDD 综述手稿重构 Skill** —— 面向已有英文综述，重建证据支持的分类、比较与批判性综合；
+9. **科研演示文稿设计 Skill** —— 将真实实验报告、结果和图表转化为可编辑、可追溯的科研汇报 PPT；
+10. **科学综述演示文稿设计 Skill** —— 面向文献综述汇报，组织方法谱系、证据比较、矛盾与研究空白。
 
 领域背景：结构生物学（Structural Biology）/ 计算机辅助药物设计（CADD）/ AIDD / 细胞生物学 / 机器学习交叉方向。
 
@@ -44,6 +47,8 @@ literature/
 │   ├── examples/
 │   ├── evals/
 │   └── scripts/
+├── aidd-review-manuscript-rebuild/        # 已有 AIDD 英文综述手稿重构
+│   ├── SKILL.md、README.zh-CN.md、references/、assets/、examples/、scripts/、tests/
 ├── drug-property-manuscript-from-scratch/  # 从中文笔稿、研究意图和实验材料组织首稿
 │   ├── .gitattributes
 │   ├── SKILL.md
@@ -75,6 +80,10 @@ literature/
 │   ├── scripts/
 │   ├── evals/
 │   └── tests/
+├── scientific-presentation-designer/ # 真实实验材料到科研汇报 PPT
+│   ├── SKILL.md、README_zh.md、agents/、examples/、references/、scripts/
+├── review-presentation-designer/     # 文献综述汇报与证据可视化 PPT
+│   ├── SKILL.md、README_zh.md、agents/、examples/、references/、scripts/
 ├── main.py                         # 文献管理系统 v1（初版）
 ├── main_v4.py                      # 文献管理系统 v4（功能完整版，推荐）
 ├── main_v4_clean.py                # v4 精简版（用于 PyInstaller 打包）
@@ -86,7 +95,7 @@ literature/
 
 ---
 
-## Skills：文献阅读、研究构思与论文写作工作流
+## Skills：文献阅读、研究构思、论文写作与科研演示工作流
 
 两个论文解读 skill 都遵循同一套核心原则：**不做逐段翻译或机械总结**，而是把论文当作"科研对象"来重建其科学逻辑，并明确区分三类信息——`Paper`（论文原文陈述）、`External evidence`（联网核验的外部证据）、`Synthesis`（综合分析）。允许联网时会主动检索最新文献、预印本和官方代码仓库进行核验。
 
@@ -137,6 +146,16 @@ literature/
 - 与 [drug-property-manuscript-rebuild/README.zh-CN.md](drug-property-manuscript-rebuild/README.zh-CN.md) 配套
 
 两个药物手稿 skill 可独立使用；按项目材料的起点选择对应流程。
+
+### aidd-review-manuscript-rebuild（AIDD 英文综述既有手稿重构）
+
+面向已有 AIDD 英文综述的结构、证据、分类体系、跨研究可比性、批判性综合和图表重构。适用于 Narrative-Critical Review、Technical Survey、Scoping Review、Systematic Review 或 Perspective；只有实际完成了相应检索与筛选流程时才报告系统综述方法。
+
+- 将原始来源与论断逐项对应，区分来源报告、作者综合、作者提出框架和未核验内容
+- 检查 AIDD 任务、数据、划分、标签、指标与验证层级，避免不成立的跨论文排名
+- 通过真实综述范文校准段落与图表表达，并交付可编辑手稿、引用、图表和问题清单
+- 与研究型论文重构 Skill `drug-property-manuscript-rebuild` 并行使用；综述手稿使用本 Skill，原始实验研究论文使用研究型重构 Skill
+- 详见 [aidd-review-manuscript-rebuild/README.zh-CN.md](aidd-review-manuscript-rebuild/README.zh-CN.md)
 
 ### research-paper-interpreter（研究型论文解读）
 
@@ -315,6 +334,24 @@ python scripts/verify_dois.py --records ./my-review/records.csv --out ./my-revie
 
 注意这些脚本的能力边界：`audit` 只校验 ID、模式链接与引用键，不判断科学真伪；`verify_dois` 只核对 Crossref 的题名/年份身份，不证明文献支持某条论断，也不会自动提升元数据核验状态。它们也不是"能自动访问所有学术数据库、读完所有全文并直接投稿"的系统——第二阶段必须真实执行检索，不能由模型凭记忆生成文献清单。
 
+### scientific-presentation-designer（科研汇报 PPT）
+
+把研究报告、CSV/JSON 指标和真实科研图像组织成可编辑 PowerPoint，并保留证据台账与逐页视觉检查流程。适用于组会、项目评审、答辩和会议汇报；附带演示使用合成示例数据。
+
+- 先核对输入材料和定量结论，再规划科学叙事与每页信息
+- 优先使用可编辑的 PowerPoint 原生图表、表格和示意图，保留原始科研图像含义
+- 渲染并检查每一页，随包提供完整工作流、脚本和 demo
+- 详见 [scientific-presentation-designer/README_zh.md](scientific-presentation-designer/README_zh.md) 与 [CODEX_START_SCIENTIFIC_PPT.md](scientific-presentation-designer/CODEX_START_SCIENTIFIC_PPT.md)
+
+### review-presentation-designer（科学综述汇报 PPT）
+
+面向文献综述、技术综述和学位论文背景汇报，围绕问题、方法分类、机制比较、证据冲突和研究空白组织可编辑幻灯片。
+
+- 建立来源—论断台账，区分来源报告、作者提出、推论与未解决问题
+- 跨论文比较时明确可比条件，图示中区分时间顺序与技术继承
+- 随包 demo 带有合成演示标记，实际汇报前需替换并核验文献材料
+- 详见 [review-presentation-designer/README_zh.md](review-presentation-designer/README_zh.md) 与 [CODEX_START_REVIEW_PPT.md](review-presentation-designer/CODEX_START_REVIEW_PPT.md)
+
 ### 安装与使用
 
 将对应 skill 文件夹复制到 Claude Code 的 skills 目录即可：
@@ -347,6 +384,9 @@ cp -r evidence-first-review-writer .claude/skills/
 mkdir -p .agents/skills
 cp -r drug-property-manuscript-from-scratch .agents/skills/
 cp -r drug-property-manuscript-rebuild .agents/skills/
+cp -r aidd-review-manuscript-rebuild .agents/skills/
+cp -r scientific-presentation-designer .agents/skills/
+cp -r review-presentation-designer .agents/skills/
 cp -r review-dialogue-architect .agents/skills/
 cp -r evidence-first-review-writer .agents/skills/
 
@@ -354,11 +394,14 @@ cp -r evidence-first-review-writer .agents/skills/
 mkdir -p ~/.agents/skills
 cp -r drug-property-manuscript-from-scratch ~/.agents/skills/
 cp -r drug-property-manuscript-rebuild ~/.agents/skills/
+cp -r aidd-review-manuscript-rebuild ~/.agents/skills/
+cp -r scientific-presentation-designer ~/.agents/skills/
+cp -r review-presentation-designer ~/.agents/skills/
 cp -r review-dialogue-architect ~/.agents/skills/
 cp -r evidence-first-review-writer ~/.agents/skills/
 ```
 
-在 Codex 中可显式调用 `$drug-property-manuscript-from-scratch` 或 `$drug-property-manuscript-rebuild`；各自的 README 说明了适用场景和输入方式。
+在 Codex 中可显式调用 `$drug-property-manuscript-from-scratch`、`$drug-property-manuscript-rebuild`、`$aidd-review-manuscript-rebuild`、`$scientific-presentation-designer` 或 `$review-presentation-designer`；各自的 README 说明了适用场景和输入方式。
 
 上述两个综述 skill 也都可直接放进 DSH 的用户级技能目录 `~/.dsh/skills/`（或项目级 `.dsh/skills/`），放入后即出现在会话的技能列表中，无需重启。
 

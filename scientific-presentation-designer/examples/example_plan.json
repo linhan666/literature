@@ -1,0 +1,356 @@
+{
+  "title": "Benchmarking Explicit Cross-Modal Interaction",
+  "subtitle": "An evidence-first example of research presentation design",
+  "author": "Scientific PPT Designer · Demonstration",
+  "language": "en-US",
+  "theme": "lab-light",
+  "disclaimer": "SYNTHETIC DEMO · not real experimental evidence",
+  "slides": [
+    {
+      "id": "S01",
+      "type": "cover",
+      "title": "Does explicit cross-modal interaction help?",
+      "subtitle": "A controlled DTI classification benchmark · presentation design demo",
+      "author": "Scientific PPT Designer  |  V1.0",
+      "tags": [
+        "QUESTION",
+        "PROTOCOL",
+        "EVIDENCE",
+        "NEXT TEST"
+      ],
+      "speaker_notes": "Every metric and example in this deck is synthetic and illustrative; this deck demonstrates visual structure only.",
+      "sources": []
+    },
+    {
+      "id": "S02",
+      "type": "cards",
+      "title": "Three decisions determine whether the comparison is useful",
+      "cards": [
+        {
+          "heading": "A fair split",
+          "body": "Separate chemistry and target generalization rather than reporting one random split."
+        },
+        {
+          "heading": "An isolated change",
+          "body": "Hold encoders and training protocol fixed when changing the interaction block."
+        },
+        {
+          "heading": "Evidence beyond AUC",
+          "body": "Report class imbalance, AUPRC, and error patterns alongside AUROC."
+        }
+      ],
+      "takeaway": "Research question → matched experiment → interpretable decision",
+      "sources": [
+        "DEMO-M01"
+      ]
+    },
+    {
+      "id": "S03",
+      "type": "pipeline",
+      "title": "A controlled pipeline localizes the interaction contribution",
+      "steps": [
+        {
+          "label": "Datasets",
+          "detail": "Input labels and target sequences"
+        },
+        {
+          "label": "Split audit",
+          "detail": "Random versus cold-target"
+        },
+        {
+          "label": "Shared encoders",
+          "detail": "Drug and protein representations"
+        },
+        {
+          "label": "Interaction",
+          "detail": "Swap one comparison operator"
+        },
+        {
+          "label": "Evaluation",
+          "detail": "AUROC · AUPRC · leakage check"
+        }
+      ],
+      "takeaway": "Only one component changes inside an otherwise matched evaluation setup.",
+      "sources": [
+        "DEMO-M01",
+        "DEMO-M02"
+      ]
+    },
+    {
+      "id": "S04",
+      "type": "kpis",
+      "title": "The illustrative method tops the matched synthetic benchmark",
+      "takeaway": "A stronger pooled metric is encouraging, but not sufficient to claim target transfer.",
+      "context": "All quantities shown here are synthetic. No statistical testing is implied.",
+      "kpis": [
+        {
+          "label": "Illustrative test AUROC",
+          "value": "0.843"
+        },
+        {
+          "label": "Illustrative test AUPRC",
+          "value": "0.806"
+        },
+        {
+          "label": "Assessed settings",
+          "value": "3"
+        },
+        {
+          "label": "Target-transfer claim",
+          "value": "Open"
+        }
+      ],
+      "sources": [
+        "DEMO-R01"
+      ]
+    },
+    {
+      "id": "S05",
+      "type": "bar_chart",
+      "title": "An identical split reveals variation across interaction variants",
+      "items": [
+        {
+          "label": "No interaction",
+          "value": 0.778,
+          "role": "baseline"
+        },
+        {
+          "label": "Bilinear variant",
+          "value": 0.819,
+          "role": "comparison"
+        },
+        {
+          "label": "Cross-attention",
+          "value": 0.831,
+          "group": "secondary",
+          "role": "attention"
+        },
+        {
+          "label": "Proposed variant",
+          "value": 0.843,
+          "highlight": true,
+          "role": "focus"
+        }
+      ],
+      "xmin": 0.0,
+      "xmax": 1.0,
+      "axis_label": "Synthetic test AUROC (0–1)",
+      "takeaway": "The illustrative focal variant has the highest value in this toy comparison.",
+      "context": "Synthetic values; uncertainty and statistical tests were not supplied.",
+      "sources": [
+        "DEMO-R01"
+      ]
+    },
+    {
+      "id": "S06",
+      "type": "line_chart",
+      "title": "Different operators show different illustrative data-efficiency trends",
+      "x_labels": [
+        "10%",
+        "25%",
+        "50%",
+        "75%",
+        "100%"
+      ],
+      "ymin": 0.5,
+      "ymax": 1.0,
+      "series": [
+        {
+          "label": "Baseline",
+          "values": [
+            0.593,
+            0.671,
+            0.724,
+            0.753,
+            0.778
+          ],
+          "role": "baseline"
+        },
+        {
+          "label": "Cross-attn",
+          "values": [
+            0.626,
+            0.716,
+            0.773,
+            0.809,
+            0.831
+          ],
+          "role": "attention"
+        },
+        {
+          "label": "Focal",
+          "values": [
+            0.645,
+            0.73,
+            0.79,
+            0.824,
+            0.843
+          ],
+          "role": "focus"
+        }
+      ],
+      "takeaway": "Toy curves suggest a testable label-efficiency hypothesis.",
+      "context": "The y-axis starts at 0.50 (explicitly labeled). Curves are not experimental learning curves.",
+      "sources": [
+        "DEMO-R02"
+      ]
+    },
+    {
+      "id": "S07",
+      "type": "metric_table",
+      "title": "A transparent evidence table is more useful than a universal winner",
+      "columns": [
+        "Synthetic model",
+        "AUROC",
+        "AUPRC",
+        "Target holdout",
+        "Status"
+      ],
+      "widths": [
+        3.5,
+        1.5,
+        1.5,
+        2.55,
+        2.95
+      ],
+      "rows": [
+        [
+          "No interaction",
+          "0.778",
+          "0.732",
+          "Not tested",
+          "Reference"
+        ],
+        [
+          "Bilinear",
+          "0.819",
+          "0.771",
+          "Not tested",
+          "Candidate"
+        ],
+        [
+          "Cross-attention",
+          "0.831",
+          "0.790",
+          "Not tested",
+          "Candidate"
+        ],
+        [
+          "Focal method",
+          "0.843",
+          "0.806",
+          "Not tested",
+          "Follow-up"
+        ]
+      ],
+      "highlight_row": 3,
+      "takeaway": "No cold-target evidence is present in this synthetic example.",
+      "sources": [
+        "DEMO-R01",
+        "DEMO-M02"
+      ]
+    },
+    {
+      "id": "S08",
+      "type": "comparison",
+      "title": "Random and cold-target splits answer different generalization questions",
+      "left": {
+        "heading": "Random pair holdout",
+        "points": [
+          "Estimates interpolation within observed targets",
+          "Can retain drug/target family overlap",
+          "Useful baseline, limited transfer claim"
+        ]
+      },
+      "right": {
+        "heading": "Cold-target holdout",
+        "points": [
+          "Tests transfer to unseen protein targets",
+          "Requires transparent target grouping",
+          "Higher bar for deployment claims"
+        ]
+      },
+      "takeaway": "Split definitions are part of the scientific claim, not a footnote.",
+      "sources": [
+        "DEMO-M02"
+      ]
+    },
+    {
+      "id": "S09",
+      "type": "image_panel",
+      "title": "Use original research images without distorting the scientific labels",
+      "figures": [
+        {
+          "path": "demo_heatmap.png",
+          "caption": "Illustrative synthetic interaction map. Original image embedded without changing its data."
+        }
+      ],
+      "speaker_notes": "This image was generated for layout testing and must not be presented as real attention or contact evidence.",
+      "sources": [
+        "DEMO-F01"
+      ]
+    },
+    {
+      "id": "S10",
+      "type": "findings",
+      "title": "The main conclusion is narrower than the performance ranking",
+      "findings": [
+        {
+          "heading": "Within-protocol variation",
+          "detail": "Toy numbers show a ranking on one matched setting, not across all DTI tasks."
+        },
+        {
+          "heading": "Transfer not established",
+          "detail": "An unseen-target evaluation and overlap audit are still required."
+        },
+        {
+          "heading": "Explanation still open",
+          "detail": "Attention scores alone cannot validate molecular contact mechanisms."
+        }
+      ],
+      "sources": [
+        "DEMO-R01",
+        "DEMO-M02"
+      ]
+    },
+    {
+      "id": "S11",
+      "type": "roadmap",
+      "title": "Next experiments should target the weakest current inference",
+      "steps": [
+        {
+          "action": "Run cold-target benchmark",
+          "criterion": "Predefined holdout and hyperparameter policy"
+        },
+        {
+          "action": "Report seed-level dispersion",
+          "criterion": "Actual repetitions and uncertainty estimates"
+        },
+        {
+          "action": "Add contact-level sanity checks",
+          "criterion": "Use structural annotations, where available"
+        },
+        {
+          "action": "Investigate failure subgroups",
+          "criterion": "Scaffold, target family, label prevalence"
+        }
+      ],
+      "sources": [
+        "DEMO-P01"
+      ]
+    },
+    {
+      "id": "S12",
+      "type": "closing",
+      "title": "Move from a metric gain to a defensible scientific conclusion",
+      "points": [
+        "A clear question makes every slide easier to design.",
+        "Matched evidence matters more than visual polish alone.",
+        "The next experiment should change a decision."
+      ],
+      "sources": [
+        "DEMO-P01"
+      ]
+    }
+  ]
+}

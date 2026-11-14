@@ -1,0 +1,120 @@
+{
+  "pptx": "/mnt/data/review-presentation-designer/demo_review_talk.pptx",
+  "slides": 15,
+  "static_geometry_checked": true,
+  "visual_slide_inspection_completed": false,
+  "scientific_source_verification_completed": false,
+  "critical_limitations": [
+    "A static QA script cannot detect all text overlaps/clipping",
+    "Only inspection of rendered slides can assess visual quality",
+    "Review claims require a source-to-claim ledger and primary-evidence checks"
+  ],
+  "warnings": [],
+  "slide_stats": [
+    {
+      "slide": 1,
+      "text_shapes": 12,
+      "picture_shapes": 0,
+      "min_main_text_pt": 12.0,
+      "total_text_chars": 253
+    },
+    {
+      "slide": 2,
+      "text_shapes": 14,
+      "picture_shapes": 0,
+      "min_main_text_pt": 12.0,
+      "total_text_chars": 243
+    },
+    {
+      "slide": 3,
+      "text_shapes": 20,
+      "picture_shapes": 0,
+      "min_main_text_pt": 15.5,
+      "total_text_chars": 261
+    },
+    {
+      "slide": 4,
+      "text_shapes": 16,
+      "picture_shapes": 0,
+      "min_main_text_pt": 12.5,
+      "total_text_chars": 293
+    },
+    {
+      "slide": 5,
+      "text_shapes": 35,
+      "picture_shapes": 0,
+      "min_main_text_pt": 11.0,
+      "total_text_chars": 364
+    },
+    {
+      "slide": 6,
+      "text_shapes": 25,
+      "picture_shapes": 0,
+      "min_main_text_pt": 10.5,
+      "total_text_chars": 381
+    },
+    {
+      "slide": 7,
+      "text_shapes": 23,
+      "picture_shapes": 0,
+      "min_main_text_pt": 11.0,
+      "total_text_chars": 299
+    },
+    {
+      "slide": 8,
+      "text_shapes": 31,
+      "picture_shapes": 0,
+      "min_main_text_pt": 13.2,
+      "total_text_chars": 317
+    },
+    {
+      "slide": 9,
+      "text_shapes": 21,
+      "picture_shapes": 0,
+      "min_main_text_pt": 10.1,
+      "total_text_chars": 320
+    },
+    {
+      "slide": 10,
+      "text_shapes": 27,
+      "picture_shapes": 0,
+      "min_main_text_pt": 11.2,
+      "total_text_chars": 266
+    },
+    {
+      "slide": 11,
+      "text_shapes": 12,
+      "picture_shapes": 0,
+      "min_main_text_pt": 14.0,
+      "total_text_chars": 254
+    },
+    {
+      "slide": 12,
+      "text_shapes": 20,
+      "picture_shapes": 0,
+      "min_main_text_pt": 10.8,
+      "total_text_chars": 272
+    },
+    {
+      "slide": 13,
+      "text_shapes": 8,
+      "picture_shapes": 1,
+      "min_main_text_pt": 11.0,
+      "total_text_chars": 265
+    },
+    {
+      "slide": 14,
+      "text_shapes": 17,
+      "picture_shapes": 0,
+      "min_main_text_pt": 10.7,
+      "total_text_chars": 245
+    },
+    {
+      "slide": 15,
+      "text_shapes": 7,
+      "picture_shapes": 0,
+      "min_main_text_pt": 20.0,
+      "total_text_chars": 169
+    }
+  ]
+}

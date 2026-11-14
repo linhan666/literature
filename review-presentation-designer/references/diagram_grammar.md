@@ -1,0 +1,11 @@
+# Diagram semantics for scientific reviews
+
+- **Visual identity**: typography, position, shape and line style encode epistemic role. A proposed concept uses `AUTHOR-PROPOSED`; a reviewed fact uses `SOURCE-REPORTED` plus source ID; disputed facts use `DISPUTED` with a citation pair; unresolved facts use `UNRESOLVED` with a caveat.
+- **Taxonomy**: tree branches indicate taxonomic containment **only**; allow overlapping categories with explicit tags rather than forcing false mutually exclusive bins. Distinguish category axis from orthogonal role/resolution axes.
+- **Information flow**: arrows signify an actual value/feature transfer or computational dependency; dotted edges indicate hypotheses. Never show a data flow that the paper does not specify. Attention Q/K/V and pairwise attention pooling are not interchangeable. Do not imply attention weights are physically faithful contacts unless validated against labeled structural data.
+- **Evidence channels**: prediction, pair dependence, functional attribution and physical/structural evidence are conceptually distinct. Parallel lanes should not have sequential arrows or visual checklists implying one proves another.
+- **Cross-study matrix**: preserve endpoint and split distinctions. Mark nonmatching training sets, pretraining, modality access and parameter budgets. An empty cell means `not reported/unknown`, not `negative`.
+- **Timeline**: chronology is a horizontal position; inheritance, direct extension, combination, benchmark comparison, and analogy are different labeled relations. Never connect studies solely by publication order. Put uncertainty or source on the edge; don't invent years.
+- **Conflict diagram**: explicitly show both published positions, their original sources, the testing conditions that differ and the adjudication experiment. Avoid false balance: weigh strength of evidence instead of equalizing unrelated claims.
+- **Evidence map**: include source passage/page, verification state and claim strength; keep independent replication conceptually separate from reading the source document.
+- **Visual borrowing**: original scientific figures should be preserved, cited and licensed; simplified redrawn mechanisms need a factual source and `Adapted from` designation. For own conceptual diagrams use `Author-proposed synthesis`.

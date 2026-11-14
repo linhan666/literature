@@ -1,0 +1,4 @@
+interface:
+  display_name: "Review PPT Designer"
+  short_description: "Evidence-traceable presentations for scientific reviews"
+  default_prompt: "Transform this scientific review manuscript and its citations into an editable, visually polished PowerPoint. Build a source-to-claim ledger, distinguish proposed frameworks from source evidence, storyboard a critical synthesis, draw editable taxonomy/comparison/timeline slides, then render and visually audit every slide."

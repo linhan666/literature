@@ -1,0 +1,4 @@
+interface:
+  display_name: "Scientific PPT Designer"
+  short_description: "Design evidence-first research slide decks"
+  default_prompt: "Turn these experiment reports, figures, and result tables into a visually polished scientific PowerPoint. Audit evidence, storyboard, build editable slides, render every page, and fix visual QA issues."
